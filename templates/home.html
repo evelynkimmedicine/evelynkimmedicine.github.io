@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evelyn Nayoung Kim | Naver-Style Personal Blog & Neuroscience Portfolio</title>
+  <script src="/assets/tailwind.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+          },
+          colors: {
+            naver: {
+              green: '#03C75A',
+              dark: '#029e47',
+              light: '#E6F9EE',
+              border: '#E5E8EB',
+              bg: '#F5F6F8',
+              ink: '#1E1E23',
+              muted: '#666A73'
+            },
+            clinical: {
+              navy: '#1B365D',
+              slate: '#334155',
+              warm: '#FAF9F5'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F4F6F8;
+      color: #1E1E23;
+      font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+    }
+    .naver-shadow {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    .naver-card-hover {
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .naver-card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 4px 10px -3px rgba(0, 0, 0, 0.04);
+      border-color: #CBD5E1;
+    }
+    .post-prose p {
+      margin-bottom: 1.15rem;
+      line-height: 1.85;
+      color: #2C3038;
+      font-size: 1.02rem;
+    }
+    .post-prose blockquote {
+      border-left: 3px solid #03C75A;
+      background-color: #F8FAFC;
+      padding: 0.85rem 1.25rem;
+      margin: 1.25rem 0;
+      font-style: italic;
+      color: #334155;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .active-cat-btn {
+      background-color: #03C75A !important;
+      color: #FFFFFF !important;
+      border-color: #03C75A !important;
+      font-weight: 600;
+    }
+    .active-rail-btn {
+      background-color: #03C75A !important;
+      color: #FFFFFF !important;
+      border-color: #03C75A !important;
+      box-shadow: 0 4px 12px rgba(3, 199, 90, 0.28);
+    }
+    /* Custom thin scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- TOP NAVER BLOG UTILITY BAR -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+    <div class="max-w-[1380px] mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <!-- Brand / Blog Identity -->
+      <div class="flex items-center gap-2.5 min-w-0">
+        <button id="brandHomeBtn" type="button" class="flex items-center gap-2 group focus:outline-none" title="Return to All Posts (Oldest First)">
+          <span class="w-7 h-7 rounded bg-[#03C75A] text-white font-bold text-sm flex items-center justify-center tracking-tighter shadow-sm group-hover:bg-[#029e47] transition">N</span>
+          <span class="font-bold text-slate-900 tracking-tight text-sm sm:text-base truncate">blog</span>
+        </button>
+        <span class="text-slate-300">|</span>
+        <button id="headerBlogTitleBtn" type="button" class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#03C75A] truncate transition">
+          Evelyn Nayoung Kim · <span class="text-slate-400 font-normal hidden md:inline">Neuroscience, Clinical Social Work &amp; Medicine</span>
+        </button>
+      </div>
+
+      <!-- Center: Quick Search & Chronological Indicator -->
+      <div class="flex-1 max-w-md hidden sm:flex items-center">
+        <div class="relative w-full">
+          <input
+            id="topSearchInput"
+            type="text"
+            placeholder="Search posts by keyword, DOI, Alzheimer's, MRI, clinical..."
+            class="w-full pl-9 pr-8 py-1.5 text-xs sm:text-sm bg-slate-100 hover:bg-slate-200/60 focus:bg-white rounded-full border border-transparent focus:border-[#03C75A] focus:outline-none transition"
+          />
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+          </svg>
+          <button id="clearSearchBtn" type="button" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold px-1">✕</button>
+        </div>
+      </div>
+
+      <!-- Right Controls: Sidebar Side Switcher, Neighbor Button, Original WP Link -->
+      <div class="flex items-center gap-2">
+        <div class="hidden lg:flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+          <span class="px-2 py-1 text-slate-500 font-medium">Filter Dock:</span>
+          <button id="dockLeftBtn" type="button" class="px-2 py-1 rounded-md font-semibold bg-white text-slate-800 shadow-sm transition">Left</button>
+          <button id="dockRightBtn" type="button" class="px-2 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition">Right</button>
+        </div>
+
+        <button id="neighborAddBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#03C75A] hover:bg-[#029e47] text-white shadow-sm transition">
+          <span id="neighborIcon">+</span>
+          <span id="neighborText">Add Neighbor (이웃추가)</span>
+        </button>
+
+        <a
+          href="https://medevelynkim.wordpress.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition"
+          title="Open original WordPress site"
+        >
+          <span>WordPress</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVER BLOG HERO SKIN & NAVIGATION TABS -->
+  <section class="bg-white border-b border-slate-200">
+    <div class="max-w-[1380px] mx-auto px-3 sm:px-6 pt-4 pb-0">
+      <!-- Banner Image Card -->
+      <div class="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 h-44 sm:h-56 md:h-64">
+        <img
+          src="/photos/blog-header.jpg"
+          alt="Evelyn Kim Blog Header Illustration"
+          class="w-full h-full object-cover opacity-90 max-w-full"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/55 to-slate-900/20"></div>
+
+        <!-- Overlay Blog Header Content -->
+        <div class="absolute inset-0 p-5 sm:p-8 flex flex-col justify-between text-white">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-medium tracking-wide border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-[#03C75A]"></span>
+              <span>med.evelyn.log · Official Academic &amp; Clinical Blog</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs text-slate-200 bg-black/35 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+              <span>TODAY <strong class="text-[#03C75A] font-bold">184</strong></span>
+              <span class="text-white/30">|</span>
+              <span>TOTAL <strong class="text-white font-semibold">24,892</strong></span>
+            </div>
+          </div>
+
+          <div class="max-w-3xl">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-sm">
+              Evelyn Nayoung Kim <span class="font-normal text-emerald-300 text-lg sm:text-xl ml-1">(김나영)</span>
+            </h1>
+            <p class="mt-1.5 text-xs sm:text-sm md:text-base text-slate-100 max-w-2xl leading-relaxed">
+              Integrating Neuroscience, Biochemistry &amp; Clinical Social Work for Holistic Patient Care · Columbia MSW · UVA Biochemistry (Echols Scholar) · U.S. Air Force Airman · Mount Sinai West Neurosurgery
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Naver Blog Classic Sub-Navigation Bar -->
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-2">
+        <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar" aria-label="Main blog sections">
+          <button id="tabMainBlog" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-bold text-[#03C75A] border-b-2 border-[#03C75A] whitespace-nowrap transition">
+            전체글보기 · Blog Main (Chronological)
+          </button>
+          <button id="tabCvAbout" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition">
+            프로필 · CV / Biography
+          </button>
+          <button id="tabPublications" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition">
+            연구논문 · Publications (@@PUBLICATION@@)
+          </button>
+          <button id="tabNeuroProjects" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition">
+            뇌과학 분석 · Neuro-Analysis (@@NEURO@@)
+          </button>
+          <button id="tabClinicalBlog" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition">
+            임상일지 · Clinical/EMT Blog (@@CLINICAL@@)
+          </button>
+          <button id="tabPhotoEssay" type="button" class="nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition">
+            사진첩 · Photography (@@PHOTO@@)
+          </button>
+        </nav>
+
+        <!-- Mobile Search Bar -->
+        <div class="w-full sm:hidden pb-2">
+          <input
+            id="mobileSearchInput"
+            type="text"
+            placeholder="Search posts, DOIs, keywords..."
+            class="w-full px-3.5 py-2 text-xs bg-slate-100 rounded-lg border border-slate-200 focus:border-[#03C75A] focus:bg-white focus:outline-none"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN NAVER BLOG 3-ZONE WORKSPACE (Left Sidebar + Main Feed + Right Quick Filter Rail) -->
+  <main class="flex-1 max-w-[1380px] w-full mx-auto px-3 sm:px-6 py-6">
+    <div id="layoutContainer" class="flex flex-col lg:flex-row gap-6 items-start">
+
+      <!-- PRIMARY SIDEBAR (Can be docked Left or Right via toggle; defaults to Left like Naver Blog) -->
+      <aside id="primarySidebar" class="w-full lg:w-80 shrink-0 space-y-5 lg:sticky lg:top-20">
+
+        <!-- Naver Profile Widget -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 naver-shadow">
+          <div class="flex items-center gap-4">
+            <img
+              src="/photos/evelyn-portrait.jpg"
+              alt="Evelyn Nayoung Kim Portrait"
+              class="w-20 h-20 rounded-2xl object-cover border-2 border-emerald-500/30 shrink-0 max-w-full h-auto"
+            />
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <h2 class="font-bold text-slate-900 text-base truncate">Evelyn Nayoung Kim</h2>
+                <span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-emerald-50 text-[#03C75A] border border-emerald-200">AUTHOR</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">she/her · @medevelynkim</p>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">Columbia MSW</span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">UVA Biochem</span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium">USAF Airman</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-3.5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Clinical Social Work Intern in the <strong>Neurosurgery Department at Mount Sinai West</strong>. Researching <strong>Alzheimer’s Disease, Tau pathology, &amp; health equity</strong> while preparing for a career as a physician-neurosurgeon.
+          </p>
+
+          <!-- Profile Stats Grid -->
+          <div class="mt-4 grid grid-cols-3 gap-2 bg-slate-50 rounded-xl p-2.5 border border-slate-200/60 text-center">
+            <div>
+              <div class="text-sm font-bold text-slate-900">@@TOTAL@@</div>
+              <div class="text-[10px] text-slate-500 uppercase tracking-wider">Total Posts</div>
+            </div>
+            <div class="border-x border-slate-200">
+              <div class="text-sm font-bold text-[#03C75A]">@@RESEARCH@@</div>
+              <div class="text-[10px] text-slate-500 uppercase tracking-wider">Papers/Posters</div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-slate-900">@@ARCHIVE_SPAN@@</div>
+              <div class="text-[10px] text-slate-500 uppercase tracking-wider">Archive Span</div>
+            </div>
+          </div>
+
+          <div class="mt-4 flex gap-2">
+            <button id="sidebarOpenCvBtn" type="button" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition text-center">
+              View Full CV / Bio
+            </button>
+            <button id="sidebarCopyUrlBtn" type="button" class="py-2 px-3 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" title="Copy Blog URL">
+              Share 🔗
+            </button>
+          </div>
+        </div>
+
+        <!-- NAVER BLOG CATEGORY FILTER BOX (Left/Right Dockable) -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 naver-shadow">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-4 rounded-sm bg-[#03C75A]"></span>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">카테고리 · Category Filter</h3>
+            </div>
+            <span class="text-[11px] text-slate-400 font-medium">Click to filter</span>
+          </div>
+
+          <div class="space-y-1.5" id="sidebarCategoryList">
+            <button type="button" data-cat="all" class="cat-filter-btn active-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>🗂️</span>
+                <span>All Posts (전체보기)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-black/10 font-bold">@@TOTAL@@</span>
+            </button>
+
+            <button type="button" data-cat="Publication" class="cat-filter-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>📄</span>
+                <span>Peer-Reviewed Papers (논문)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 font-bold">4</span>
+            </button>
+
+            <button type="button" data-cat="Presentation" class="cat-filter-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>🔬</span>
+                <span>Research &amp; Thesis (학술발표)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 font-bold">5</span>
+            </button>
+
+            <button type="button" data-cat="Neuroscience" class="cat-filter-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>🧠</span>
+                <span>Neuro-Analysis (뇌과학 프로젝트)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 font-bold">3</span>
+            </button>
+
+            <button type="button" data-cat="Clinical Blog" class="cat-filter-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>🩺</span>
+                <span>Clinical &amp; EMT Blog (임상일지)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 font-bold">5</span>
+            </button>
+
+            <button type="button" data-cat="Photography" class="cat-filter-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium border border-slate-200/80 text-slate-700 hover:bg-slate-50 transition">
+              <span class="flex items-center gap-2">
+                <span>📷</span>
+                <span>Photography (사진과 시선)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 font-bold">1</span>
+            </button>
+          </div>
+
+          <!-- Tag Cloud Filter -->
+          <div class="mt-4 pt-4 border-t border-slate-100">
+            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Popular Topic Tags</div>
+            <div class="flex flex-wrap gap-1.5" id="sidebarTagCloud">
+              <button type="button" data-tag="Alzheimer's Disease" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#Alzheimer's</button>
+              <button type="button" data-tag="Tau Pathology" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#TauPathology</button>
+              <button type="button" data-tag="Neurosurgery" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#Neurosurgery</button>
+              <button type="button" data-tag="LCSW" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#LCSW</button>
+              <button type="button" data-tag="Machine Learning" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#BrainMRI</button>
+              <button type="button" data-tag="Cultural Humility" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 transition">#KoreanCare</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chronological Timeline Mini-Navigator -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 naver-shadow">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">연도별 아카이브 · By Year</h3>
+            <button id="resetYearBtn" type="button" class="text-[11px] text-[#03C75A] hover:underline font-medium">All Years</button>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5" id="yearFilterGrid"><!-- YEAR_FILTERS --></div>
+        </div>
+      </aside>
+
+      <!-- CENTER MAIN BLOG STREAM (NAVER BLOG POST LIST + CHRONOLOGICAL FEED) -->
+      <div id="mainContentColumn" class="flex-1 min-w-0 w-full space-y-5">
+
+        <!-- CV / BIO FULL PROFILE SECTION (Hidden by default when on Blog Main, or toggled via tab) -->
+        <section id="cvProfileSection" class="hidden bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 naver-shadow space-y-6"><!-- BIOGRAPHY --></section>
+
+        <!-- NAVER BLOG COLLAPSIBLE DIRECTORY TABLE (목록열기 / 목록닫기) -->
+        <section class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden naver-shadow">
+          <div class="px-5 py-3.5 bg-slate-50/80 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-800" id="directoryHeaderLabel">전체보기 (All Posts)</span>
+              <span class="text-xs text-[#03C75A] font-bold" id="directoryCountLabel">@@TOTAL@@개의 글</span>
+              <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium" id="sortBadgeIndicator">
+                Ordered: Oldest at Top/Front (오래된순)
+              </span>
+            </div>
+            <button id="toggleDirectoryBtn" type="button" class="text-xs font-semibold text-slate-600 hover:text-[#03C75A] flex items-center gap-1 transition">
+              <span id="toggleDirectoryText">Hide Post Index Table (목록닫기)</span>
+              <span id="toggleDirectoryArrow">▲</span>
+            </button>
+          </div>
+
+          <div id="directoryTableContainer" class="divide-y divide-slate-100 max-h-64 overflow-y-auto"><!-- POST_DIRECTORY --></div>
+        </section>
+
+        <!-- FEED TOOLBAR: SORT ORDER (OLDEST FIRST DEFAULT) & VIEW MODE SWITCHER -->
+        <section class="bg-white rounded-2xl border border-slate-200/90 px-5 py-3.5 naver-shadow flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-semibold text-slate-500">Time Order:</span>
+            <button id="sortOldestBtn" type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#03C75A] text-white shadow-sm transition">
+              ↑ Oldest First (오래된순 · Default)
+            </button>
+            <button id="sortNewestBtn" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+              ↓ Newest First (최신순)
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500 hidden sm:inline">Layout:</span>
+            <div class="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
+              <button id="viewFeedBtn" type="button" class="px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition">
+                블로그형 (Editorial Feed)
+              </button>
+              <button id="viewGridBtn" type="button" class="px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 transition">
+                앨범형 (Card Grid)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACTIVE FILTER STATUS BANNER (Appears when filtered by category, year, tag, or search) -->
+        <div id="activeFilterBanner" class="hidden bg-emerald-50/90 border border-emerald-200 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
+          <div class="text-xs text-emerald-950 font-medium flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#03C75A]"></span>
+            <span id="activeFilterText">Showing filtered posts</span>
+          </div>
+          <button id="resetAllFiltersBtn" type="button" class="text-xs font-bold text-[#03C75A] hover:underline">
+            Reset Filter (전체보기로 복귀) ✕
+          </button>
+        </div>
+
+        <!-- MAIN CHRONOLOGICAL BLOG POSTS CONTAINER -->
+        <div id="postsContainer" class="space-y-6"><!-- POST_FEED --></div>
+
+      </div>
+
+      <!-- RIGHT-SIDE FLOATING QUICK FILTER RAIL (Ensures one-click category filter buttons are always present on BOTH left and right sides!) -->
+      <aside id="rightQuickRail" class="hidden xl:flex flex-col gap-2 w-44 shrink-0 sticky top-20 bg-white rounded-2xl border border-slate-200/90 p-3.5 naver-shadow">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-1">Quick Filter (우측 메뉴)</div>
+        <button type="button" data-cat="all" class="rail-filter-btn active-rail-btn text-left px-3 py-2 rounded-xl text-xs font-medium border border-slate-200/80 transition flex items-center justify-between">
+          <span>All Posts</span>
+          <span class="text-[10px] opacity-80">@@TOTAL@@</span>
+        </button>
+        <button type="button" data-cat="Publication" class="rail-filter-btn text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 border border-slate-200/80 transition flex items-center justify-between">
+          <span>Publications</span>
+          <span class="text-[10px] text-slate-400">@@PUBLICATION@@</span>
+        </button>
+        <button type="button" data-cat="Presentation" class="rail-filter-btn text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 border border-slate-200/80 transition flex items-center justify-between">
+          <span>Presentations</span>
+          <span class="text-[10px] text-slate-400">@@PRESENTATION@@</span>
+        </button>
+        <button type="button" data-cat="Neuroscience" class="rail-filter-btn text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 border border-slate-200/80 transition flex items-center justify-between">
+          <span>Neuroscience</span>
+          <span class="text-[10px] text-slate-400">@@NEURO@@</span>
+        </button>
+        <button type="button" data-cat="Clinical Blog" class="rail-filter-btn text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 border border-slate-200/80 transition flex items-center justify-between">
+          <span>Clinical Blog</span>
+          <span class="text-[10px] text-slate-400">@@CLINICAL@@</span>
+        </button>
+        <button type="button" data-cat="Photography" class="rail-filter-btn text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 border border-slate-200/80 transition flex items-center justify-between">
+          <span>Photography</span>
+          <span class="text-[10px] text-slate-400">@@PHOTO@@</span>
+        </button>
+        <div class="pt-2 border-t border-slate-100 mt-1 flex flex-col gap-1.5">
+          <button id="scrollTopRailBtn" type="button" class="w-full py-1.5 rounded-lg text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+            ↑ Top (맨위로)
+          </button>
+          <button id="scrollBottomRailBtn" type="button" class="w-full py-1.5 rounded-lg text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+            ↓ Latest (맨아래로)
+          </button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- FULL POST READER MODAL (NAVER BLOG SMART EDITOR 3.0 ARTICLE VIEW) -->
+  <div id="postReaderModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <!-- Modal Top Bar -->
+      <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-6 h-6 rounded bg-[#03C75A] text-white font-bold text-xs flex items-center justify-center">N</span>
+          <span id="modalCategoryBadge" class="text-xs font-bold text-[#03C75A] uppercase tracking-wider truncate">Category</span>
+          <span class="text-slate-300">·</span>
+          <span id="modalDateBadge" class="text-xs text-slate-500 font-medium">Date</span>
+        </div>
+        <button id="closeModalBtn" type="button" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-200/80 hover:bg-slate-300 text-slate-800 transition">
+          Close (닫기) ✕
+        </button>
+      </div>
+
+      <!-- Modal Scrollable Article Body -->
+      <div id="modalArticleBody" class="p-6 sm:p-10 overflow-y-auto space-y-6 post-prose">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Modal Footer: Prev / Next Post in Chronological Order -->
+      <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3">
+        <button id="modalPrevBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 hover:border-[#03C75A] text-slate-700 transition disabled:opacity-40">
+          ← Older Entry
+        </button>
+        <div class="flex items-center gap-2">
+          <button id="modalSympathyBtn" type="button" class="px-4 py-2 rounded-full text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition">
+            ❤️ 공감 Sympathy
+          </button>
+          <a id="modalExternalUrl" href="https://medevelynkim.wordpress.com/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-full text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition">
+            View Source / DOI ↗
+          </a>
+        </div>
+        <button id="modalNextBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 hover:border-[#03C75A] text-slate-700 transition disabled:opacity-40">
+          Newer Entry →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-[#03C75A]"></span>
+    <span id="toastMessage">Action completed</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+    <div class="max-w-[1380px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-5 h-5 rounded bg-[#03C75A] text-white font-bold text-[11px] flex items-center justify-center">N</span>
+        <span><strong>Evelyn Nayoung Kim (김나영)</strong> · Personal Academic &amp; Clinical Blog</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="https://medevelynkim.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-[#03C75A] transition">Original WordPress Home</a>
+        <a href="https://medevelynkim.wordpress.com/about/" target="_blank" rel="noopener noreferrer" class="hover:text-[#03C75A] transition">CV / Bio</a>
+        <a href="https://medevelynkim.wordpress.com/publications-presentations/" target="_blank" rel="noopener noreferrer" class="hover:text-[#03C75A] transition">Publications</a>
+        <a href="https://medevelynkim.wordpress.com/neuro-analysis-projects/" target="_blank" rel="noopener noreferrer" class="hover:text-[#03C75A] transition">Neuro-Analysis</a>
+        <a href="https://medevelynkim.wordpress.com/blog/" target="_blank" rel="noopener noreferrer" class="hover:text-[#03C75A] transition">Clinical Blog</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- COMPLETE APPLICATION LOGIC & CHRONOLOGICAL POST ARCHIVE -->
+  <script>
+    const IMG_NEURO = "/photos/neuroscience.jpg";
+    const IMG_PUB = "/photos/research.jpg";
+    const IMG_CLINICAL = "/photos/clinical.jpg";
+    const IMG_PHOTO = "/photos/photography.jpg";
+
+    // Complete 18-Post Chronological Archive (Sorted Oldest -> Newest by timestamp)
+    const BLOG_POSTS = /* BLOG_DATA */;
+
+    // Application State
+    const state = {
+      selectedCategory: "all",
+      selectedYear: "all",
+      selectedTag: "",
+      searchQuery: "",
+      sortOrder: "oldest", // User explicitly requested oldest in the front/top!
+      viewMode: "feed",    // 'feed' (Naver Blog editorial view) or 'grid' (Album view)
+      sidebarDock: "left", // 'left' or 'right'
+      directoryOpen: true,
+      neighborAdded: false,
+      activeTab: "main",   // 'main' or 'cv'
+      activeModalPostId: null,
+      likedPosts: {},
+      expandedInlinePosts: {}
+    };
+
+    function showToast(msg) {
+      const banner = document.getElementById("toastBanner");
+      const text = document.getElementById("toastMessage");
+      if (!banner || !text) return;
+      text.textContent = msg;
+      banner.classList.remove("hidden");
+      if (window._toastTimer) clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        banner.classList.add("hidden");
+      }, 3200);
+    }
+
+    function getFilteredAndSortedPosts() {
+      const filtered = BLOG_POSTS.filter((post) => {
+        if (state.selectedCategory !== "all" && post.category !== state.selectedCategory) {
+          return false;
+        }
+        if (state.selectedYear !== "all" && post.year !== state.selectedYear) {
+          return false;
+        }
+        if (state.selectedTag && !post.tags.some(t => t.toLowerCase() === state.selectedTag.toLowerCase())) {
+          return false;
+        }
+        if (state.searchQuery.trim() !== "") {
+          const q = state.searchQuery.toLowerCase().trim();
+          const haystack = `${post.title} ${post.subtitle} ${post.excerpt} ${post.category} ${post.tags.join(" ")} ${post.displayDate}`.toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+        return true;
+      });
+
+      filtered.sort((a, b) => {
+        const tA = new Date(a.date).getTime();
+        const tB = new Date(b.date).getTime();
+        return state.sortOrder === "oldest" ? tA - tB : tB - tA;
+      });
+
+      return filtered;
+    }
+
+    function getCategoryBadgeStyle(category) {
+      switch (category) {
+        case "Publication":
+          return "bg-blue-50 text-blue-700 border-blue-200";
+        case "Presentation":
+          return "bg-indigo-50 text-indigo-700 border-indigo-200";
+        case "Neuroscience":
+          return "bg-teal-50 text-teal-800 border-teal-200";
+        case "Clinical Blog":
+          return "bg-emerald-50 text-[#03C75A] border-emerald-200";
+        case "Photography":
+          return "bg-amber-50 text-amber-800 border-amber-200";
+        default:
+          return "bg-slate-100 text-slate-700 border-slate-200";
+      }
+    }
+
+    function renderDirectoryTable(posts) {
+      const container = document.getElementById("directoryTableContainer");
+      const headerLabel = document.getElementById("directoryHeaderLabel");
+      const countLabel = document.getElementById("directoryCountLabel");
+      const sortBadge = document.getElementById("sortBadgeIndicator");
+
+      if (!container) return;
+
+      const catTitleMap = {
+        "all": "전체보기 (All Posts — Neuroscience, Publications, Clinical Blog & Photography)",
+        "Publication": "연구논문 · Peer-Reviewed Publications",
+        "Presentation": "학술발표 · Independent Projects, Posters & Honors Thesis",
+        "Neuroscience": "뇌과학 프로젝트 · Computational Neuro-Analysis & Structural Biology",
+        "Clinical Blog": "임상일지 · Clinical Social Worker / EMT Blog (Mount Sinai West)",
+        "Photography": "사진첩 · Candid Human Photography & Visual Essays"
+      };
+
+      headerLabel.textContent = catTitleMap[state.selectedCategory] || "전체보기 (All Posts)";
+      countLabel.textContent = `${posts.length}개의 글`;
+      sortBadge.textContent = state.sortOrder === "oldest"
+        ? `Ordered: Oldest at Top/Front (오래된순 · ${BLOG_POSTS[0].year} → ${BLOG_POSTS[BLOG_POSTS.length - 1].year})`
+        : `Ordered: Newest at Top/Front (최신순 · ${BLOG_POSTS[BLOG_POSTS.length - 1].year} → ${BLOG_POSTS[0].year})`;
+
+      if (posts.length === 0) {
+        container.innerHTML = `<div class="px-5 py-4 text-xs text-slate-400">No matching posts in directory.</div>`;
+        return;
+      }
+
+      container.innerHTML = posts.map((post, idx) => {
+        const orderNum = state.sortOrder === "oldest" ? idx + 1 : posts.length - idx;
+        return `
+          <div class="px-5 py-2.5 hover:bg-emerald-50/50 flex items-center justify-between gap-3 transition text-xs">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="font-mono text-[11px] font-bold text-slate-400 w-7 shrink-0">#${String(orderNum).padStart(2, '0')}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold border shrink-0 ${getCategoryBadgeStyle(post.category)}">${post.category}</span>
+              <a  data-open-post="${post.id}" class="text-left font-medium text-slate-800 hover:text-[#03C75A] truncate transition" href="/posts/${post.id}.html">
+                ${post.title}
+              </a>
+            </div>
+            <span class="text-[11px] text-slate-400 font-mono shrink-0">${post.date.replace(/-/g, '.')}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderPostsFeed(posts) {
+      const container = document.getElementById("postsContainer");
+      if (!container) return;
+
+      if (posts.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3 naver-shadow">
+            <div class="text-3xl">🔍</div>
+            <h3 class="text-base font-bold text-slate-800">No posts matched your current filter</h3>
+            <p class="text-xs text-slate-500 max-w-md mx-auto">Try clearing your search query or switching back to "All Posts (전체보기)".</p>
+            <button type="button" id="emptyResetBtn" class="mt-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#03C75A] text-white hover:bg-[#029e47] transition">
+              Show All ${BLOG_POSTS.length} Posts (Oldest First)
+            </button>
+          </div>
+        `;
+        const emptyBtn = document.getElementById("emptyResetBtn");
+        if (emptyBtn) emptyBtn.addEventListener("click", resetAllFilters);
+        return;
+      }
+
+      if (state.viewMode === "grid") {
+        container.className = "grid grid-cols-1 md:grid-cols-2 gap-5";
+        container.innerHTML = posts.map((post, idx) => {
+          const orderNum = state.sortOrder === "oldest" ? idx + 1 : posts.length - idx;
+          const liked = !!state.likedPosts[post.id];
+          const likeCount = post.likes + (liked ? 1 : 0);
+          return `
+            <article id="card-${post.id}" class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden flex flex-col justify-between naver-shadow naver-card-hover">
+              <div>
+                <div class="relative h-44 bg-slate-900 overflow-hidden">
+                  <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover max-w-full" />
+                  <div class="absolute top-3 left-3 flex items-center gap-1.5">
+                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-950/80 text-emerald-400 backdrop-blur-sm border border-white/15">
+                      #${String(orderNum).padStart(2, '0')} · ${post.year}
+                    </span>
+                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold border bg-white/95 text-slate-800">
+                      ${post.category}
+                    </span>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <div class="text-xs text-slate-400 font-medium">${post.displayDate} · ${post.readTime}</div>
+                  <h2 class="mt-1.5 text-base font-bold text-slate-900 leading-snug hover:text-[#03C75A] transition">
+                    <a  data-open-post="${post.id}" class="text-left" href="/posts/${post.id}.html">${post.title}</a>
+                  </h2>
+                  <p class="mt-1 text-xs text-slate-500 line-clamp-2">${post.subtitle}</p>
+                  <p class="mt-3 text-xs text-slate-600 leading-relaxed line-clamp-3">${post.excerpt}</p>
+                </div>
+              </div>
+              <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <button type="button" data-like-post="${post.id}" class="px-2.5 py-1 rounded-full text-xs font-semibold border transition ${liked ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-white text-slate-600 border-slate-200 hover:border-rose-200'}">
+                    ❤️ 공감 ${likeCount}
+                  </button>
+                  <a href="${post.sourceUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-slate-500 hover:text-[#03C75A] transition">Source ↗</a>
+                </div>
+                <a  data-open-post="${post.id}" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-[#03C75A] hover:bg-[#03C75A] hover:text-white transition" href="/posts/${post.id}.html">
+                  Read Post →
+                </a>
+              </div>
+            </article>
+          `;
+        }).join("");
+      } else {
+        // Authentic Naver Blog Full Editorial Stream View (블로그형)
+        container.className = "space-y-6";
+        container.innerHTML = posts.map((post, idx) => {
+          const orderNum = state.sortOrder === "oldest" ? idx + 1 : posts.length - idx;
+          const liked = !!state.likedPosts[post.id];
+          const likeCount = post.likes + (liked ? 1 : 0);
+          const isExpanded = !!state.expandedInlinePosts[post.id];
+
+          return `
+            <article id="card-${post.id}" class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden naver-shadow naver-card-hover">
+              <!-- Naver Post Header Metadata Bar -->
+              <div class="px-6 pt-6 pb-4 border-b border-slate-100">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-slate-900 text-emerald-400">
+                      #${String(orderNum).padStart(2, '0')} ${orderNum === 1 ? '· OLDEST ENTRY' : orderNum === BLOG_POSTS.length ? '· LATEST ENTRY' : ''}
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-md text-xs font-bold border ${getCategoryBadgeStyle(post.category)}">
+                      ${post.categoryKo}
+                    </span>
+                  </div>
+                  <div class="text-xs text-slate-400 font-medium flex items-center gap-2">
+                    <span>📅 ${post.displayDate}</span>
+                    <span>·</span>
+                    <span>⏱️ ${post.readTime}</span>
+                  </div>
+                </div>
+
+                <h2 class="mt-3 text-xl sm:text-2xl font-bold text-slate-900 leading-snug hover:text-[#03C75A] transition">
+                  <a  data-open-post="${post.id}" class="text-left" href="/posts/${post.id}.html">${post.title}</a>
+                </h2>
+                <p class="mt-1.5 text-xs sm:text-sm font-medium text-slate-500">${post.subtitle}</p>
+
+                <!-- Author Mini-Row (Naver SmartEditor Style) -->
+                <div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div class="flex items-center gap-2.5">
+                    <img src="/photos/evelyn-portrait.jpg" alt="Evelyn Kim" class="w-7 h-7 rounded-full object-cover border border-emerald-300 max-w-full h-auto" />
+                    <div class="text-xs">
+                      <span class="font-bold text-slate-800">Evelyn Nayoung Kim</span>
+                      <span class="text-slate-400 ml-1">· med.evelyn.log</span>
+                    </div>
+                  </div>
+                  <a href="${post.sourceUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-semibold text-[#03C75A] hover:underline">
+                    <span>${post.sourceLabel}</span>
+                    <span>↗</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Post Body Content + Thumbnail -->
+              <div class="p-6">
+                <div class="flex flex-col md:flex-row gap-6 items-start">
+                  <div class="w-full md:w-64 shrink-0 rounded-xl overflow-hidden border border-slate-200 bg-slate-900">
+                    <img src="${post.image}" alt="${post.title}" class="w-full h-44 object-cover max-w-full" />
+                  </div>
+                  <div class="flex-1 min-w-0 space-y-3">
+                    <p class="text-sm sm:text-base text-slate-700 leading-relaxed">${post.excerpt}</p>
+                    <div class="${isExpanded ? 'block' : 'hidden'} pt-3 border-t border-slate-100 post-prose text-sm">
+                      ${post.fullHtml}
+                    </div>
+                    <div class="pt-1 flex flex-wrap items-center gap-2">
+                      <button type="button" data-toggle-inline="${post.id}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-[#03C75A] hover:bg-[#03C75A] hover:text-white border border-emerald-200 transition">
+                        ${isExpanded ? 'Collapse Inline Text (접기 ▲)' : 'Expand Full Article Inline (본문 펼쳐보기 ▼)'}
+                      </button>
+                      <a  data-open-post="${post.id}" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" href="/posts/${post.id}.html">
+                        Open Reader View (독서 모드 ⤢)
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tags Row -->
+                <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-1.5">
+                  ${post.tags.map(tag => `
+                    <button type="button" data-tag="${tag}" class="tag-pill-btn text-[11px] px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-50 hover:text-[#03C75A] text-slate-600 font-medium transition">
+                      #${tag}
+                    </button>
+                  `).join("")}
+                </div>
+              </div>
+
+              <!-- Naver Blog Post Footer Reaction Bar (공감 / 댓글 / 스크랩) -->
+              <div class="px-6 py-3.5 bg-slate-50/90 border-t border-slate-200/70 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <button type="button" data-like-post="${post.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold border transition ${liked ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-white text-slate-700 border-slate-200 hover:border-rose-300'}">
+                    <span>❤️</span>
+                    <span>공감 ${likeCount}</span>
+                  </button>
+                  <a  data-open-post="${post.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-slate-300 transition" href="/posts/${post.id}.html">
+                    <span>💬</span>
+                    <span>댓글 ${post.comments.length}</span>
+                  </a>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button type="button" data-copy-link="${post.sourceUrl}" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-200/70 transition">
+                    🔗 Copy Source URL
+                  </button>
+                  <a href="${post.sourceUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:border-[#03C75A] hover:text-[#03C75A] transition">
+                    Original Link ↗
+                  </a>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+    }
+
+    function updateFilterUI() {
+      // Update Sidebar Category Buttons
+      document.querySelectorAll(".cat-filter-btn").forEach((btn) => {
+        const cat = btn.getAttribute("data-cat");
+        if (cat === state.selectedCategory && state.activeTab === "main") {
+          btn.classList.add("active-cat-btn");
+        } else {
+          btn.classList.remove("active-cat-btn");
+        }
+      });
+
+      // Update Right Rail Category Buttons
+      document.querySelectorAll(".rail-filter-btn").forEach((btn) => {
+        const cat = btn.getAttribute("data-cat");
+        if (cat === state.selectedCategory && state.activeTab === "main") {
+          btn.classList.add("active-rail-btn");
+        } else {
+          btn.classList.remove("active-rail-btn");
+        }
+      });
+
+      // Update Year Filter Buttons
+      document.querySelectorAll(".year-btn").forEach((btn) => {
+        const yr = btn.getAttribute("data-year");
+        if (yr === state.selectedYear) {
+          btn.className = "year-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-[#03C75A] text-white border border-[#03C75A] transition" + (yr === "2025" ? " col-span-3" : "");
+        } else {
+          btn.className = "year-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200/70 transition" + (yr === "2025" ? " col-span-3" : "");
+        }
+      });
+
+      // Update Top Navigation Tabs
+      const tabMap = {
+        "tabMainBlog": state.activeTab === "main" && state.selectedCategory === "all",
+        "tabCvAbout": state.activeTab === "cv",
+        "tabPublications": state.activeTab === "main" && (state.selectedCategory === "Publication" || state.selectedCategory === "Presentation"),
+        "tabNeuroProjects": state.activeTab === "main" && state.selectedCategory === "Neuroscience",
+        "tabClinicalBlog": state.activeTab === "main" && state.selectedCategory === "Clinical Blog",
+        "tabPhotoEssay": state.activeTab === "main" && state.selectedCategory === "Photography"
+      };
+      Object.entries(tabMap).forEach(([id, isActive]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (isActive) {
+          el.className = "nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-bold text-[#03C75A] border-b-2 border-[#03C75A] whitespace-nowrap transition";
+        } else {
+          el.className = "nav-tab-btn px-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap transition";
+        }
+      });
+
+      // Sort Order Buttons
+      const oldestBtn = document.getElementById("sortOldestBtn");
+      const newestBtn = document.getElementById("sortNewestBtn");
+      if (oldestBtn && newestBtn) {
+        if (state.sortOrder === "oldest") {
+          oldestBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#03C75A] text-white shadow-sm transition";
+          newestBtn.className = "px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+        } else {
+          newestBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-[#03C75A] text-white shadow-sm transition";
+          oldestBtn.className = "px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+        }
+      }
+
+      // View Mode Buttons
+      const feedBtn = document.getElementById("viewFeedBtn");
+      const gridBtn = document.getElementById("viewGridBtn");
+      if (feedBtn && gridBtn) {
+        if (state.viewMode === "feed") {
+          feedBtn.className = "px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition";
+          gridBtn.className = "px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 transition";
+        } else {
+          gridBtn.className = "px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition";
+          feedBtn.className = "px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 transition";
+        }
+      }
+
+      // Active Filter Status Banner
+      const filterBanner = document.getElementById("activeFilterBanner");
+      const filterText = document.getElementById("activeFilterText");
+      const hasFilter = state.selectedCategory !== "all" || state.selectedYear !== "all" || state.selectedTag !== "" || state.searchQuery.trim() !== "";
+      if (filterBanner && filterText) {
+        if (hasFilter) {
+          filterBanner.classList.remove("hidden");
+          const parts = [];
+          if (state.selectedCategory !== "all") parts.push(`Category: ${state.selectedCategory}`);
+          if (state.selectedYear !== "all") parts.push(`Year: ${state.selectedYear}`);
+          if (state.selectedTag !== "") parts.push(`Tag: #${state.selectedTag}`);
+          if (state.searchQuery.trim() !== "") parts.push(`Search: "${state.searchQuery.trim()}"`);
+          filterText.textContent = `Active Filter — ${parts.join(" · ")}`;
+        } else {
+          filterBanner.classList.add("hidden");
+        }
+      }
+
+      // Show/Hide CV Section
+      const cvSec = document.getElementById("cvProfileSection");
+      if (cvSec) {
+        if (state.activeTab === "cv") {
+          cvSec.classList.remove("hidden");
+        } else {
+          cvSec.classList.add("hidden");
+        }
+      }
+    }
+
+    function renderAll() {
+      const posts = getFilteredAndSortedPosts();
+      updateFilterUI();
+      renderDirectoryTable(posts);
+      renderPostsFeed(posts);
+    }
+
+    function resetAllFilters() {
+      state.selectedCategory = "all";
+      state.selectedYear = "all";
+      state.selectedTag = "";
+      state.searchQuery = "";
+      state.activeTab = "main";
+      const topSearch = document.getElementById("topSearchInput");
+      const mobSearch = document.getElementById("mobileSearchInput");
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (topSearch) topSearch.value = "";
+      if (mobSearch) mobSearch.value = "";
+      if (clearBtn) clearBtn.classList.add("hidden");
+      renderAll();
+    }
+
+    function openPostModal(postId) {
+      const posts = getFilteredAndSortedPosts();
+      const idx = posts.findIndex(p => p.id === postId);
+      const post = idx !== -1 ? posts[idx] : BLOG_POSTS.find(p => p.id === postId);
+      if (!post) return;
+
+      state.activeModalPostId = post.id;
+      const modal = document.getElementById("postReaderModal");
+      const catBadge = document.getElementById("modalCategoryBadge");
+      const dateBadge = document.getElementById("modalDateBadge");
+      const body = document.getElementById("modalArticleBody");
+      const extUrl = document.getElementById("modalExternalUrl");
+      const prevBtn = document.getElementById("modalPrevBtn");
+      const nextBtn = document.getElementById("modalNextBtn");
+      const symBtn = document.getElementById("modalSympathyBtn");
+
+      catBadge.textContent = post.categoryKo;
+      dateBadge.textContent = `${post.displayDate} · ${post.readTime}`;
+      extUrl.href = post.sourceUrl;
+
+      const liked = !!state.likedPosts[post.id];
+      const likeCount = post.likes + (liked ? 1 : 0);
+      symBtn.textContent = `❤️ 공감 Sympathy (${likeCount})`;
+
+      body.innerHTML = `
+        <div class="space-y-4">
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">${post.title}</h1>
+          <p class="text-sm font-medium text-slate-500">${post.subtitle}</p>
+          <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 max-h-80">
+            <img src="${post.image}" alt="${post.title}" class="w-full h-72 object-cover max-w-full" />
+          </div>
+          <div class="pt-4">${post.fullHtml}</div>
+          <div class="pt-4 border-t border-slate-200 flex flex-wrap gap-1.5">
+            ${post.tags.map(t => `<span class="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium">#${t}</span>`).join("")}
+          </div>
+          <!-- Comments Section inside Modal -->
+          <div class="pt-6 border-t border-slate-200 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">💬 댓글 · Reader Notes (${post.comments.length})</h3>
+            <div class="space-y-2">
+              ${post.comments.length === 0 ? `<p class="text-xs text-slate-400">No comments yet. Leave the first academic or clinical note below.</p>` : post.comments.map(c => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                  <div class="flex items-center justify-between font-bold text-slate-800">
+                    <span>${c.author}</span>
+                    <span class="font-normal text-slate-400">${c.date}</span>
+                  </div>
+                  <p class="mt-1 text-slate-600 !mb-0">${c.text}</p>
+                </div>
+              `).join("")}
+            </div>
+            <form id="modalCommentForm" class="flex gap-2 pt-2">
+              <input id="modalCommentInput" type="text" required placeholder="Write a comment or clinical reflection..." class="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:border-[#03C75A] focus:outline-none" />
+              <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#03C75A] text-white hover:bg-[#029e47] transition">Post</button>
+            </form>
+          </div>
+        </div>
+      `;
+
+      const commentForm = document.getElementById("modalCommentForm");
+      if (commentForm) {
+        commentForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const input = document.getElementById("modalCommentInput");
+          if (!input || !input.value.trim()) return;
+          post.comments.push({
+            author: "Visiting Colleague",
+            date: "2026.10.29",
+            text: input.value.trim()
+          });
+          openPostModal(post.id);
+          renderAll();
+          showToast("Comment added to post!");
+        });
+      }
+
+      prevBtn.disabled = idx <= 0;
+      nextBtn.disabled = idx === -1 || idx >= posts.length - 1;
+      prevBtn.onclick = () => { if (idx > 0) openPostModal(posts[idx - 1].id); };
+      nextBtn.onclick = () => { if (idx !== -1 && idx < posts.length - 1) openPostModal(posts[idx + 1].id); };
+
+      modal.classList.remove("hidden");
+    }
+
+    function setSidebarDock(side) {
+      state.sidebarDock = side;
+      const container = document.getElementById("layoutContainer");
+      const leftBtn = document.getElementById("dockLeftBtn");
+      const rightBtn = document.getElementById("dockRightBtn");
+      if (!container) return;
+
+      if (side === "right") {
+        container.classList.remove("lg:flex-row");
+        container.classList.add("lg:flex-row-reverse");
+        if (rightBtn && leftBtn) {
+          rightBtn.className = "px-2 py-1 rounded-md font-semibold bg-white text-slate-800 shadow-sm transition";
+          leftBtn.className = "px-2 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition";
+        }
+        showToast("Category sidebar docked to the Right side");
+      } else {
+        container.classList.remove("lg:flex-row-reverse");
+        container.classList.add("lg:flex-row");
+        if (rightBtn && leftBtn) {
+          leftBtn.className = "px-2 py-1 rounded-md font-semibold bg-white text-slate-800 shadow-sm transition";
+          rightBtn.className = "px-2 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition";
+        }
+        showToast("Category sidebar docked to the Left side");
+      }
+    }
+
+    function copyTextSafe(text, label) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast(label)).catch(() => fallbackCopy(text, label));
+        } else {
+          fallbackCopy(text, label);
+        }
+      } catch (err) {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      showToast(label);
+    }
+
+    // Wire Event Listeners on Load
+    window.addEventListener("DOMContentLoaded", () => {
+      renderAll();
+
+      // Brand & Home Reset
+      document.getElementById("brandHomeBtn").addEventListener("click", resetAllFilters);
+      document.getElementById("headerBlogTitleBtn").addEventListener("click", resetAllFilters);
+      document.getElementById("resetAllFiltersBtn").addEventListener("click", resetAllFilters);
+
+      // Top Navigation Tabs
+      document.getElementById("tabMainBlog").addEventListener("click", () => {
+        state.activeTab = "main";
+        state.selectedCategory = "all";
+        renderAll();
+      });
+      document.getElementById("tabCvAbout").addEventListener("click", () => {
+        state.activeTab = "cv";
+        renderAll();
+      });
+      document.getElementById("tabPublications").addEventListener("click", () => {
+        state.activeTab = "main";
+        state.selectedCategory = "Publication";
+        renderAll();
+      });
+      document.getElementById("tabNeuroProjects").addEventListener("click", () => {
+        state.activeTab = "main";
+        state.selectedCategory = "Neuroscience";
+        renderAll();
+      });
+      document.getElementById("tabClinicalBlog").addEventListener("click", () => {
+        state.activeTab = "main";
+        state.selectedCategory = "Clinical Blog";
+        renderAll();
+      });
+      document.getElementById("tabPhotoEssay").addEventListener("click", () => {
+        state.activeTab = "main";
+        state.selectedCategory = "Photography";
+        renderAll();
+      });
+
+      // Sidebar & CV Buttons
+      document.getElementById("sidebarOpenCvBtn").addEventListener("click", () => {
+        state.activeTab = "cv";
+        renderAll();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      document.getElementById("backToFeedFromCvBtn").addEventListener("click", () => {
+        state.activeTab = "main";
+        renderAll();
+      });
+      document.getElementById("sidebarCopyUrlBtn").addEventListener("click", () => {
+        copyTextSafe(window.location.origin + "/", "Copied Evelyn Kim's Portfolio URL!");
+      });
+
+      // Neighbor Add Button
+      document.getElementById("neighborAddBtn").addEventListener("click", () => {
+        state.neighborAdded = !state.neighborAdded;
+        const icon = document.getElementById("neighborIcon");
+        const txt = document.getElementById("neighborText");
+        if (state.neighborAdded) {
+          icon.textContent = "✓";
+          txt.textContent = "Neighbor Added (이웃중)";
+          showToast("Added Evelyn Nayoung Kim as a Naver Blog Neighbor!");
+        } else {
+          icon.textContent = "+";
+          txt.textContent = "Add Neighbor (이웃추가)";
+          showToast("Removed from Neighbor list");
+        }
+      });
+
+      // Sidebar Dock Left/Right Switcher
+      document.getElementById("dockLeftBtn").addEventListener("click", () => setSidebarDock("left"));
+      document.getElementById("dockRightBtn").addEventListener("click", () => setSidebarDock("right"));
+
+      // Directory Table Collapse Toggle
+      document.getElementById("toggleDirectoryBtn").addEventListener("click", () => {
+        state.directoryOpen = !state.directoryOpen;
+        const tbl = document.getElementById("directoryTableContainer");
+        const txt = document.getElementById("toggleDirectoryText");
+        const arr = document.getElementById("toggleDirectoryArrow");
+        if (state.directoryOpen) {
+          tbl.classList.remove("hidden");
+          txt.textContent = "Hide Post Index Table (목록닫기)";
+          arr.textContent = "▲";
+        } else {
+          tbl.classList.add("hidden");
+          txt.textContent = "Show Post Index Table (목록열기)";
+          arr.textContent = "▼";
+        }
+      });
+
+      // Sort Order Buttons
+      document.getElementById("sortOldestBtn").addEventListener("click", () => {
+        state.sortOrder = "oldest";
+        renderAll();
+        showToast(`Sorted chronologically: Oldest at the front/top (${BLOG_POSTS[0].year} → ${BLOG_POSTS[BLOG_POSTS.length - 1].year})`);
+      });
+      document.getElementById("sortNewestBtn").addEventListener("click", () => {
+        state.sortOrder = "newest";
+        renderAll();
+        showToast(`Sorted chronologically: Newest at the front/top (${BLOG_POSTS[BLOG_POSTS.length - 1].year} → ${BLOG_POSTS[0].year})`);
+      });
+
+      // Layout View Mode Buttons
+      document.getElementById("viewFeedBtn").addEventListener("click", () => {
+        state.viewMode = "feed";
+        renderAll();
+      });
+      document.getElementById("viewGridBtn").addEventListener("click", () => {
+        state.viewMode = "grid";
+        renderAll();
+      });
+
+      // Category Filter Buttons (Both Left/Right Sidebar and Floating Rail)
+      document.querySelectorAll(".cat-filter-btn, .rail-filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const cat = btn.getAttribute("data-cat") || "all";
+          state.selectedCategory = cat;
+          state.activeTab = "main";
+          renderAll();
+        });
+      });
+
+      // Year Filter Buttons
+      document.querySelectorAll(".year-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const yr = btn.getAttribute("data-year");
+          state.selectedYear = state.selectedYear === yr ? "all" : yr;
+          state.activeTab = "main";
+          renderAll();
+        });
+      });
+      document.getElementById("resetYearBtn").addEventListener("click", () => {
+        state.selectedYear = "all";
+        renderAll();
+      });
+
+      // Search Inputs
+      const topSearch = document.getElementById("topSearchInput");
+      const mobSearch = document.getElementById("mobileSearchInput");
+      const clearBtn = document.getElementById("clearSearchBtn");
+
+      function handleSearch(val) {
+        state.searchQuery = val;
+        if (clearBtn) {
+          if (val.trim() !== "") clearBtn.classList.remove("hidden");
+          else clearBtn.classList.add("hidden");
+        }
+        renderAll();
+      }
+
+      if (topSearch) {
+        topSearch.addEventListener("input", (e) => {
+          if (mobSearch) mobSearch.value = e.target.value;
+          handleSearch(e.target.value);
+        });
+      }
+      if (mobSearch) {
+        mobSearch.addEventListener("input", (e) => {
+          if (topSearch) topSearch.value = e.target.value;
+          handleSearch(e.target.value);
+        });
+      }
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          if (topSearch) topSearch.value = "";
+          if (mobSearch) mobSearch.value = "";
+          handleSearch("");
+        });
+      }
+
+      // Right Rail Scroll Top/Bottom
+      document.getElementById("scrollTopRailBtn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      document.getElementById("scrollBottomRailBtn").addEventListener("click", () => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      });
+
+      // Modal Close & Sympathy
+      document.getElementById("closeModalBtn").addEventListener("click", () => {
+        document.getElementById("postReaderModal").classList.add("hidden");
+      });
+      document.getElementById("postReaderModal").addEventListener("click", (e) => {
+        if (e.target.id === "postReaderModal") {
+          document.getElementById("postReaderModal").classList.add("hidden");
+        }
+      });
+      document.getElementById("modalSympathyBtn").addEventListener("click", () => {
+        if (!state.activeModalPostId) return;
+        state.likedPosts[state.activeModalPostId] = !state.likedPosts[state.activeModalPostId];
+        openPostModal(state.activeModalPostId);
+        renderAll();
+      });
+
+      // Delegated Clicks for Dynamic Post Cards, Directory Links, Tags, Sympathy, and Inline Expand
+      document.body.addEventListener("click", (e) => {
+        const openBtn = e.target.closest("[data-open-post]");
+        if (openBtn) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          openPostModal(openBtn.getAttribute("data-open-post"));
+          return;
+        }
+
+        const toggleInlineBtn = e.target.closest("[data-toggle-inline]");
+        if (toggleInlineBtn) {
+          const id = toggleInlineBtn.getAttribute("data-toggle-inline");
+          state.expandedInlinePosts[id] = !state.expandedInlinePosts[id];
+          renderAll();
+          return;
+        }
+
+        const likeBtn = e.target.closest("[data-like-post]");
+        if (likeBtn) {
+          const id = likeBtn.getAttribute("data-like-post");
+          state.likedPosts[id] = !state.likedPosts[id];
+          renderAll();
+          return;
+        }
+
+        const tagBtn = e.target.closest(".tag-pill-btn");
+        if (tagBtn) {
+          const tag = tagBtn.getAttribute("data-tag") || "";
+          state.selectedTag = state.selectedTag === tag ? "" : tag;
+          state.activeTab = "main";
+          renderAll();
+          return;
+        }
+
+        const copyBtn = e.target.closest("[data-copy-link]");
+        if (copyBtn) {
+          const url = copyBtn.getAttribute("data-copy-link");
+          copyTextSafe(url, "Copied post/DOI link to clipboard!");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
