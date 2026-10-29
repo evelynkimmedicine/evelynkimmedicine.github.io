@@ -36,3 +36,7 @@ python3 scripts/build.py
 ```
 
 GitHub Pages uses the GitHub Actions source and publishes `dist`. The root `index.html` is a fallback copy of the website, not the editing source. The build generates the root homepage, the article pages, MCAT, and sitemap.
+
+## MCAT study log
+
+The MCAT tab and `/mcat.html` use `templates/mcat.html`, `assets/mcat.css`, `assets/mcat-core.js`, and `assets/mcat.js`. Sessions are stored in a password-protected D1 backend on the existing Sites hosting. The runtime password is configured as a secret there; never add it to this public repository. Weeks start Monday; daily averages count elapsed calendar days, including zero-study days, in America/New_York. The exam countdown targets March 19, 2027.

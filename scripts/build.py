@@ -134,6 +134,10 @@ def build():
     home = (ROOT / "templates/home.html").read_text()
     script_version = hashlib.sha256((ROOT / "assets/blog.js").read_bytes()).hexdigest()[:12]
     home = re.sub(r'/assets/blog\.js(?:\?v=[^"\s]+)?', "/assets/blog.js?v=" + script_version, home)
+    mcat_assets = '<link rel="stylesheet" href="/assets/mcat.css?v=' + hashlib.sha256((ROOT / "assets/mcat.css").read_bytes()).hexdigest()[:12] + '">'
+    for asset in ("mcat-core.js", "mcat.js"):
+        mcat_assets += '<script defer src="/assets/' + asset + '?v=' + hashlib.sha256((ROOT / "assets" / asset).read_bytes()).hexdigest()[:12] + '"></script>'
+    home = home.replace("</head>", mcat_assets + "</head>")
     base_head = re.search(r"<head>(.*?)</head>", home, re.S)[1]
     schema = {"@context": "https://schema.org", "@type": "ProfilePage", "url": ORIGIN + "/",
               "name": CONFIG["author"], "mainEntity": {"@type": "Person", "name": CONFIG["author"],
@@ -143,7 +147,7 @@ def build():
     home = home.replace("/* BLOG_DATA */", safe_json(posts))
     home = home.replace("<!-- SITE_FOOTER -->", site_footer())
     home = home.replace("<!-- BIOGRAPHY -->", (ROOT / "content/biography.html").read_text())
-    home = home.replace("<!-- MCAT_CONTENT -->", markdown.markdown((ROOT / "content/mcat.md").read_text(), extensions=["extra"]))
+    home = home.replace("<!-- MCAT_CONTENT -->", (ROOT / "templates/mcat.html").read_text())
     directory = []
     feed = []
     for post in reversed(posts):
@@ -184,7 +188,7 @@ def build():
         ET.SubElement(item, ns + "loc").text = url
     ET.ElementTree(sitemap).write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / ".nojekyll").touch()
-    mcat = markdown.markdown((ROOT / "content/mcat.md").read_text(), extensions=["extra"])
+    mcat = (ROOT / "templates/mcat.html").read_text()
     mcat_head = head_for(base_head, "MCAT | Evelyn Kim", "MCAT study notes and resources", ORIGIN + "/mcat.html", CONFIG["image"], {"@context":"https://schema.org", "@type":"WebPage", "name":"MCAT"})
     (OUT / "mcat.html").write_text('<html lang="en"><head>'+mcat_head+'</head><body><header class="max-w-4xl mx-auto p-6"><a href="/">← Evelyn Kim</a></header><main class="max-w-4xl mx-auto bg-white p-8 rounded-2xl post-prose">'+mcat+'</main>'+site_footer()+'</body></html>')
     print(f"Built {len(posts)} posts and homepage for {ORIGIN}")
