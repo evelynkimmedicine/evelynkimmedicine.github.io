@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "dist"
 CONFIG = json.loads((ROOT / "site.json").read_text())
 ORIGIN = CONFIG["url"].rstrip("/")
-CATEGORIES = {"Publication", "Presentation", "Neuroscience", "Clinical Blog", "Photography"}
+CATEGORIES = {"Publication", "Presentation", "Neuroscience", "Clinical Blog", "MCAT"}
 
 
 def escape(value):
@@ -24,6 +24,10 @@ def escape(value):
 
 def safe_json(value):
     return json.dumps(value, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+
+
+def site_footer():
+    return '<footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-sm text-slate-600">Evelyn Kim <a href="https://evelynkimmedicine.github.io/">evelynkimmedicine.github.io</a></footer>'
 
 
 def load_posts():
@@ -56,17 +60,18 @@ def load_posts():
             raise ValueError(f"{path.name}: image must point to an uploaded photo in /photos/")
         post.setdefault("categoryKo", post["category"])
         post.setdefault("subtitle", "")
-        post.setdefault("sourceUrl", f"/posts/{post['id']}.html")
+        post.setdefault("sourceUrl", "")
         post.setdefault("sourceLabel", "Post permalink")
         post.setdefault("tags", [])
-        post.setdefault("likes", 0)
-        post.setdefault("comments", [])
         post.setdefault("readTime", f"{max(1, len(match[2].split()) // 200)} min read")
         post["fullHtml"] = markdown.markdown(match[2], extensions=["extra", "sane_lists"])
         posts.append(post)
     if not posts:
         raise ValueError("At least one published post is required")
-    return sorted(posts, key=lambda post: (post["date"], post["id"]))
+    posts = sorted(posts, key=lambda post: (post["date"], post["id"]))
+    for number, post in enumerate(posts, 1):
+        post["number"] = number
+    return posts
 
 
 def metadata(title, description, url, image, schema, kind="website"):
@@ -88,7 +93,7 @@ def metadata(title, description, url, image, schema, kind="website"):
 
 def head_for(base_head, title, description, url, image, schema, kind="website"):
     head = re.sub(r"<title>.*?</title>", f"<title>{escape(title)}</title>", base_head)
-    extra_css = """<style>.post-prose ul{list-style:disc;padding-left:1.5rem;margin:1rem 0}.post-prose ol{list-style:decimal;padding-left:1.5rem;margin:1rem 0}.post-prose li{margin:.4rem 0}.post-prose h2{font-size:1.5rem;font-weight:700;margin:1.8rem 0 .8rem}.post-prose h3{font-size:1.2rem;font-weight:700;margin:1.5rem 0 .7rem}.post-prose a{color:#029e47;text-decoration:underline}.post-prose img{max-width:100%;height:auto;border-radius:.75rem}.post-prose pre{overflow:auto;padding:1rem;background:#f1f5f9;border-radius:.75rem}.post-prose table{display:block;overflow:auto;border-collapse:collapse;max-width:100%}.post-prose th,.post-prose td{border:1px solid #e2e8f0;padding:.5rem}</style>"""
+    extra_css = """<style>.post-prose h1{font-size:2rem;font-weight:700;margin-bottom:1rem}.post-prose ul{list-style:disc;padding-left:1.5rem;margin:1rem 0}.post-prose ol{list-style:decimal;padding-left:1.5rem;margin:1rem 0}.post-prose li{margin:.4rem 0}.post-prose h2{font-size:1.5rem;font-weight:700;margin:1.8rem 0 .8rem}.post-prose h3{font-size:1.2rem;font-weight:700;margin:1.5rem 0 .7rem}.post-prose a{color:#029e47;text-decoration:underline}.post-prose img{max-width:100%;height:auto;border-radius:.75rem}.post-prose pre{overflow:auto;padding:1rem;background:#f1f5f9;border-radius:.75rem}.post-prose table{display:block;overflow:auto;border-collapse:collapse;max-width:100%}.post-prose th,.post-prose td{border:1px solid #e2e8f0;padding:.5rem}</style>"""
     return head + extra_css + metadata(title, description, url, image, schema, kind)
 
 
@@ -101,14 +106,15 @@ def post_page(post, base_head):
               "image": ORIGIN + post["image"]}
     head = head_for(base_head, title, post["excerpt"], url, post["image"], schema, "article")
     tags = "".join(f'<span class="text-xs rounded-full bg-emerald-50 text-emerald-800 px-3 py-1">#{escape(tag)}</span>' for tag in post["tags"])
+    source_link = f'<a href="{escape(post["sourceUrl"])}" class="text-emerald-700 underline">{escape(post["sourceLabel"])}</a>' if post["sourceUrl"] else ""
     return f'''<!DOCTYPE html><html lang="en"><head>{head}</head><body>
-<header class="bg-white border-b border-slate-200"><div class="max-w-4xl mx-auto px-5 py-5"><a href="/" class="font-bold text-emerald-700">← {escape(CONFIG['author'])} · med.evelyn.log</a></div></header>
+<header class="bg-white border-b border-slate-200"><div class="max-w-4xl mx-auto px-5 py-5"><a href="/" class="font-bold text-emerald-700">← {escape(CONFIG['author'])} · evelynkimmedicine.github.io</a></div></header>
 <main class="max-w-4xl mx-auto p-4 sm:p-8"><article class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
 <div class="p-6 sm:p-10"><p class="text-sm text-emerald-700 font-semibold">{escape(post['categoryKo'])}</p><h1 class="text-2xl sm:text-4xl font-bold text-slate-900 mt-3 leading-tight">{escape(post['title'])}</h1>
 <p class="mt-4 text-slate-600">{escape(post['subtitle'])}</p><p class="mt-3 text-sm text-slate-500">{escape(CONFIG['author'])} · <time datetime="{post['date']}">{post['displayDate']}</time> · {escape(post['readTime'])}</p></div>
 <img src="{escape(post['image'])}" alt="{escape(post.get('imageAlt', post['title']))}" class="w-full h-64 sm:h-80 object-cover">
-<div class="p-6 sm:p-10 post-prose">{post['fullHtml']}<div class="flex flex-wrap gap-2 py-5">{tags}</div><a href="{escape(post['sourceUrl'])}" class="text-emerald-700 font-semibold underline">{escape(post['sourceLabel'])} ↗</a></div>
-</article><nav class="py-8"><a href="/" class="font-semibold text-emerald-700">← All posts and biography</a></nav></main></body></html>'''
+<div class="p-6 sm:p-10 post-prose">{post['fullHtml']}<div class="flex flex-wrap gap-2 py-5">{tags}</div>{source_link}</div>
+</article><nav class="py-8"><a href="/" class="font-semibold text-emerald-700">← All posts and biography</a></nav></main>{site_footer()}</body></html>'''
 
 
 def build():
@@ -126,14 +132,16 @@ def build():
     base_head = re.search(r"<head>(.*?)</head>", home, re.S)[1]
     schema = {"@context": "https://schema.org", "@type": "ProfilePage", "url": ORIGIN + "/",
               "name": CONFIG["author"], "mainEntity": {"@type": "Person", "name": CONFIG["author"],
-              "alternateName": CONFIG["author_korean"], "url": ORIGIN + "/"}}
+              "url": ORIGIN + "/"}}
     head = head_for(base_head, CONFIG["title"], CONFIG["description"], ORIGIN + "/", CONFIG["image"], schema)
     home = home.replace(base_head, head, 1)
     home = home.replace("/* BLOG_DATA */", safe_json(posts))
+    home = home.replace("<!-- SITE_FOOTER -->", site_footer())
     home = home.replace("<!-- BIOGRAPHY -->", (ROOT / "content/biography.html").read_text())
     directory = []
     feed = []
-    for index, post in enumerate(posts, 1):
+    for post in reversed(posts):
+        index = post["number"]
         href = f"/posts/{post['id']}.html"
         directory.append(f'<div class="px-5 py-2.5 flex items-center justify-between gap-3 text-xs"><a href="{href}" class="text-slate-800 hover:text-emerald-700">#{index:02} · {escape(post["title"])}</a><time class="text-slate-400 shrink-0" datetime="{post["date"]}">{post["date"]}</time></div>')
         feed.append(f'<article class="bg-white rounded-2xl border border-slate-200 p-6 naver-shadow"><p class="text-xs text-emerald-700">{escape(post["categoryKo"])} · {post["displayDate"]}</p><h2 class="mt-3 text-xl font-bold"><a href="{href}">{escape(post["title"])}</a></h2><img class="mt-4 w-full h-44 object-cover rounded-xl" src="{escape(post["image"])}" alt="{escape(post["title"])}"><p class="mt-4 text-slate-600">{escape(post["excerpt"])}</p><a class="inline-block mt-4 font-semibold text-emerald-700" href="{href}">Read post →</a></article>')
@@ -145,7 +153,7 @@ def build():
     counts = Counter(post["category"] for post in posts)
     tokens = {"TOTAL": len(posts), "RESEARCH": counts["Publication"] + counts["Presentation"],
               "PUBLICATION": counts["Publication"], "PRESENTATION": counts["Presentation"],
-              "NEURO": counts["Neuroscience"], "CLINICAL": counts["Clinical Blog"], "PHOTO": counts["Photography"],
+              "NEURO": counts["Neuroscience"], "CLINICAL": counts["Clinical Blog"], "MCAT": counts["MCAT"],
               "ARCHIVE_SPAN": f"{posts[0]['year']}–{posts[-1]['year']}"}
     for name, value in tokens.items():
         home = home.replace(f"@@{name}@@", str(value))
@@ -164,11 +172,14 @@ def build():
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
     sitemap = ET.Element(ns + "urlset")
-    for url in [ORIGIN + "/"] + [f"{ORIGIN}/posts/{post['id']}.html" for post in posts]:
+    for url in [ORIGIN + "/", ORIGIN + "/mcat.html"] + [f"{ORIGIN}/posts/{post['id']}.html" for post in posts]:
         item = ET.SubElement(sitemap, ns + "url")
         ET.SubElement(item, ns + "loc").text = url
     ET.ElementTree(sitemap).write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / ".nojekyll").touch()
+    mcat = markdown.markdown((ROOT / "content/mcat.md").read_text(), extensions=["extra"])
+    mcat_head = head_for(base_head, "MCAT | Evelyn Kim", "MCAT study notes and resources", ORIGIN + "/mcat.html", CONFIG["image"], {"@context":"https://schema.org", "@type":"WebPage", "name":"MCAT"})
+    (OUT / "mcat.html").write_text('<html lang="en"><head>'+mcat_head+'</head><body><header class="max-w-4xl mx-auto p-6"><a href="/">← Evelyn Kim</a></header><main class="max-w-4xl mx-auto bg-white p-8 rounded-2xl post-prose">'+mcat+'</main>'+site_footer()+'</body></html>')
     print(f"Built {len(posts)} posts and homepage for {ORIGIN}")
 
 

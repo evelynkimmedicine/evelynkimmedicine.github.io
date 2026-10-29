@@ -2,23 +2,21 @@
 id: post-2023-sps-protein
 date: '2023-02-18'
 category: Neuroscience
-categoryKo: 뇌과학 프로젝트 · Structural Biochemistry
+categoryKo: Neuroscience
 title: 'Sucrose-Phosphate Synthase Analysis: 3D Structural & Functional Modeling'
 subtitle: Computational Crystallography & Active-Site Analysis of Thermosynechococcus elongatus via MolSoft ICM Browser
 image: /photos/neuroscience.jpg
 sourceUrl: https://medevelynkim.wordpress.com/neuro-analysis-projects/
 sourceLabel: Neuro-Analysis Projects Portfolio
 tags:
-
 - Biochemistry
 - Structural Biology
 - Protein Modeling
 - MolSoft ICM
-likes: 34
 readTime: 6 min read
 excerpt: Structural and functional modeling of Sucrose-Phosphate Synthase (SPS) from Thermosynechococcus elongatus using MolSoft ICM Browser to map Rossmann-type folds and catalytic active sites.
-comments: []
 ---
+
 
 **Project Archive:** [Neuro\-Analysis & Structural Biology Projects](https://medevelynkim.wordpress.com/neuro-analysis-projects/)
 
