@@ -1,3 +1,4 @@
+import hashlib
 """Build the blog from editable Markdown posts; no server is required."""
 from pathlib import Path
 from datetime import date, datetime
@@ -131,6 +132,8 @@ def build():
     for folder in ("assets", "photos"):
         shutil.copytree(ROOT / folder, OUT / folder, ignore=shutil.ignore_patterns(".*"))
     home = (ROOT / "templates/home.html").read_text()
+    script_version = hashlib.sha256((ROOT / "assets/blog.js").read_bytes()).hexdigest()[:12]
+    home = re.sub(r'/assets/blog\.js(?:\?v=[^"\s]+)?', "/assets/blog.js?v=" + script_version, home)
     base_head = re.search(r"<head>(.*?)</head>", home, re.S)[1]
     schema = {"@context": "https://schema.org", "@type": "ProfilePage", "url": ORIGIN + "/",
               "name": CONFIG["author"], "mainEntity": {"@type": "Person", "name": CONFIG["author"],
@@ -140,6 +143,7 @@ def build():
     home = home.replace("/* BLOG_DATA */", safe_json(posts))
     home = home.replace("<!-- SITE_FOOTER -->", site_footer())
     home = home.replace("<!-- BIOGRAPHY -->", (ROOT / "content/biography.html").read_text())
+    home = home.replace("<!-- MCAT_CONTENT -->", markdown.markdown((ROOT / "content/mcat.md").read_text(), extensions=["extra"]))
     directory = []
     feed = []
     for post in reversed(posts):
