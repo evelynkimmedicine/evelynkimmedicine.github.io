@@ -120,11 +120,6 @@
     <div class="max-w-[1380px] mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-3">
       <!-- Brand / Blog Identity -->
       <div class="flex items-center gap-2.5 min-w-0">
-        <button id="brandHomeBtn" type="button" class="flex items-center gap-2 group focus:outline-none" title="Return to All Posts (Oldest First)">
-          <span class="w-7 h-7 rounded bg-[#03C75A] text-white font-bold text-sm flex items-center justify-center tracking-tighter shadow-sm group-hover:bg-[#029e47] transition">N</span>
-          <span class="font-bold text-slate-900 tracking-tight text-sm sm:text-base truncate">blog</span>
-        </button>
-        <span class="text-slate-300">|</span>
         <button id="headerBlogTitleBtn" type="button" class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#03C75A] truncate transition">
           Evelyn Nayoung Kim · <span class="text-slate-400 font-normal hidden md:inline">Neuroscience, Clinical Social Work &amp; Medicine</span>
         </button>
@@ -146,30 +141,6 @@
         </div>
       </div>
 
-      <!-- Right Controls: Sidebar Side Switcher, Neighbor Button, Original WP Link -->
-      <div class="flex items-center gap-2">
-        <div class="hidden lg:flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
-          <span class="px-2 py-1 text-slate-500 font-medium">Filter Dock:</span>
-          <button id="dockLeftBtn" type="button" class="px-2 py-1 rounded-md font-semibold bg-white text-slate-800 shadow-sm transition">Left</button>
-          <button id="dockRightBtn" type="button" class="px-2 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition">Right</button>
-        </div>
-
-        <button id="neighborAddBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#03C75A] hover:bg-[#029e47] text-white shadow-sm transition">
-          <span id="neighborIcon">+</span>
-          <span id="neighborText">Add Neighbor (이웃추가)</span>
-        </button>
-
-        <a
-          href="https://medevelynkim.wordpress.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition"
-          title="Open original WordPress site"
-        >
-          <span>WordPress</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-      </div>
     </div>
   </header>
 
@@ -186,19 +157,7 @@
         <div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/55 to-slate-900/20"></div>
 
         <!-- Overlay Blog Header Content -->
-        <div class="absolute inset-0 p-5 sm:p-8 flex flex-col justify-between text-white">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-medium tracking-wide border border-white/20">
-              <span class="w-2 h-2 rounded-full bg-[#03C75A]"></span>
-              <span>med.evelyn.log · Official Academic &amp; Clinical Blog</span>
-            </div>
-            <div class="flex items-center gap-3 text-xs text-slate-200 bg-black/35 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-              <span>TODAY <strong class="text-[#03C75A] font-bold">184</strong></span>
-              <span class="text-white/30">|</span>
-              <span>TOTAL <strong class="text-white font-semibold">24,892</strong></span>
-            </div>
-          </div>
-
+        <div class="absolute inset-0 p-5 sm:p-8 flex flex-col justify-end text-white">
           <div class="max-w-3xl">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-sm">
               Evelyn Nayoung Kim <span class="font-normal text-emerald-300 text-lg sm:text-xl ml-1">(김나영)</span>
@@ -1209,7 +1168,7 @@
       renderAll();
 
       // Brand & Home Reset
-      document.getElementById("brandHomeBtn").addEventListener("click", resetAllFilters);
+      document.getElementById("brandHomeBtn")?.addEventListener("click", resetAllFilters);
       document.getElementById("headerBlogTitleBtn").addEventListener("click", resetAllFilters);
       document.getElementById("resetAllFiltersBtn").addEventListener("click", resetAllFilters);
 
@@ -1259,7 +1218,7 @@
       });
 
       // Neighbor Add Button
-      document.getElementById("neighborAddBtn").addEventListener("click", () => {
+      document.getElementById("neighborAddBtn")?.addEventListener("click", () => {
         state.neighborAdded = !state.neighborAdded;
         const icon = document.getElementById("neighborIcon");
         const txt = document.getElementById("neighborText");
@@ -1275,8 +1234,8 @@
       });
 
       // Sidebar Dock Left/Right Switcher
-      document.getElementById("dockLeftBtn").addEventListener("click", () => setSidebarDock("left"));
-      document.getElementById("dockRightBtn").addEventListener("click", () => setSidebarDock("right"));
+      document.getElementById("dockLeftBtn")?.addEventListener("click", () => setSidebarDock("left"));
+      document.getElementById("dockRightBtn")?.addEventListener("click", () => setSidebarDock("right"));
 
       // Directory Table Collapse Toggle
       document.getElementById("toggleDirectoryBtn").addEventListener("click", () => {
