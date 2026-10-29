@@ -159,6 +159,7 @@ def build():
     if "@@" in home or "/* BLOG_DATA */" in home:
         raise ValueError("Unresolved template placeholder")
     (OUT / "index.html").write_text(home)
+    (OUT / "home.html").write_text(home)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {ORIGIN}/sitemap.xml\n")
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
