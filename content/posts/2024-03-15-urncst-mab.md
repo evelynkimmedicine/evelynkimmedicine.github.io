@@ -5,7 +5,7 @@ category: Publication
 categoryKo: Publication
 title: Monoclonal Antibody Treatment Delivery for Alzheimer’s Disease & Blood-Brain Barrier (BBB)
 subtitle: 'Kim, N., Huynh, L., Tiwari, P., Khela, H., Shalom, M. (2024) · URNCST Journal, 8: A1–A5'
-image: /photos/research.jpg
+image: ""
 sourceUrl: https://doi.org/10.26685/urncst.551
 sourceLabel: 'DOI: 10.26685/urncst.551'
 tags:

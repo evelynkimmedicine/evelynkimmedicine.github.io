@@ -5,7 +5,7 @@ category: Neuroscience
 categoryKo: Neuroscience
 title: 'Sucrose-Phosphate Synthase Analysis: 3D Structural & Functional Modeling'
 subtitle: Computational Crystallography & Active-Site Analysis of Thermosynechococcus elongatus via MolSoft ICM Browser
-image: /photos/neuroscience.jpg
+image: ""
 sourceUrl: https://medevelynkim.wordpress.com/neuro-analysis-projects/
 sourceLabel: Neuro-Analysis Projects Portfolio
 tags:

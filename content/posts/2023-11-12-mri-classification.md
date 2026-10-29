@@ -5,7 +5,7 @@ category: Neuroscience
 categoryKo: Neuroscience
 title: 'Brain Tumor MRI Classification: Multi-Class Deep Learning for Neuro-Oncology'
 subtitle: Automated Classification of Glioma, Meningioma, Pituitary Tumor, and Non-Tumor Brain MRI Scans
-image: /photos/neuroscience.jpg
+image: ""
 sourceUrl: https://medevelynkim.wordpress.com/neuro-analysis-projects/
 sourceLabel: Neuro-Analysis Projects Page
 tags:

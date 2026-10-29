@@ -39,7 +39,7 @@ def load_posts():
         if not match:
             raise ValueError(f"{path.name}: missing YAML header between --- lines")
         post = yaml.safe_load(match[1])
-        for key in ("date", "title", "category", "image", "excerpt"):
+        for key in ("date", "title", "category", "excerpt"):
             if not post.get(key):
                 raise ValueError(f"{path.name}: missing {key}")
         if post["category"] not in CATEGORIES:
@@ -56,7 +56,8 @@ def load_posts():
         if post["id"] in used_ids:
             raise ValueError(f"Duplicate post id: {post['id']}")
         used_ids.add(post["id"])
-        if not post["image"].startswith("/") or not (ROOT / post["image"].lstrip("/")).is_file():
+        post.setdefault("image", "")
+        if post["image"] and (not post["image"].startswith("/") or not (ROOT / post["image"].lstrip("/")).is_file()):
             raise ValueError(f"{path.name}: image must point to an uploaded photo in /photos/")
         post.setdefault("categoryKo", post["category"])
         post.setdefault("subtitle", "")
@@ -103,16 +104,17 @@ def post_page(post, base_head):
     schema = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": post["title"],
               "description": post["excerpt"], "datePublished": post["date"], "mainEntityOfPage": url,
               "author": {"@type": "Person", "name": CONFIG["author"], "url": ORIGIN + "/"},
-              "image": ORIGIN + post["image"]}
-    head = head_for(base_head, title, post["excerpt"], url, post["image"], schema, "article")
+              **({"image": ORIGIN + post["image"]} if post["image"] else {})}
+    head = head_for(base_head, title, post["excerpt"], url, post["image"] or CONFIG["image"], schema, "article")
     tags = "".join(f'<span class="text-xs rounded-full bg-emerald-50 text-emerald-800 px-3 py-1">#{escape(tag)}</span>' for tag in post["tags"])
     source_link = f'<a href="{escape(post["sourceUrl"])}" class="text-emerald-700 underline">{escape(post["sourceLabel"])}</a>' if post["sourceUrl"] else ""
+    post_image = f'<img src="{escape(post["image"])}" alt="{escape(post.get("imageAlt", post["title"]))}" class="w-full h-auto object-contain">' if post["image"] else ""
     return f'''<!DOCTYPE html><html lang="en"><head>{head}</head><body>
 <header class="bg-white border-b border-slate-200"><div class="max-w-4xl mx-auto px-5 py-5"><a href="/" class="font-bold text-emerald-700">← {escape(CONFIG['author'])} · evelynkimmedicine.github.io</a></div></header>
 <main class="max-w-4xl mx-auto p-4 sm:p-8"><article class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
 <div class="p-6 sm:p-10"><p class="text-sm text-emerald-700 font-semibold">{escape(post['categoryKo'])}</p><h1 class="text-2xl sm:text-4xl font-bold text-slate-900 mt-3 leading-tight">{escape(post['title'])}</h1>
 <p class="mt-4 text-slate-600">{escape(post['subtitle'])}</p><p class="mt-3 text-sm text-slate-500">{escape(CONFIG['author'])} · <time datetime="{post['date']}">{post['displayDate']}</time> · {escape(post['readTime'])}</p></div>
-<img src="{escape(post['image'])}" alt="{escape(post.get('imageAlt', post['title']))}" class="w-full h-64 sm:h-80 object-cover">
+{post_image}
 <div class="p-6 sm:p-10 post-prose">{post['fullHtml']}<div class="flex flex-wrap gap-2 py-5">{tags}</div>{source_link}</div>
 </article><nav class="py-8"><a href="/" class="font-semibold text-emerald-700">← All posts and biography</a></nav></main>{site_footer()}</body></html>'''
 
@@ -143,8 +145,9 @@ def build():
     for post in reversed(posts):
         index = post["number"]
         href = f"/posts/{post['id']}.html"
-        directory.append(f'<div class="px-5 py-2.5 flex items-center justify-between gap-3 text-xs"><a href="{href}" class="text-slate-800 hover:text-emerald-700">#{index:02} · {escape(post["title"])}</a><time class="text-slate-400 shrink-0" datetime="{post["date"]}">{post["date"]}</time></div>')
-        feed.append(f'<article class="bg-white rounded-2xl border border-slate-200 p-6 naver-shadow"><p class="text-xs text-emerald-700">{escape(post["categoryKo"])} · {post["displayDate"]}</p><h2 class="mt-3 text-xl font-bold"><a href="{href}">{escape(post["title"])}</a></h2><img class="mt-4 w-full h-44 object-cover rounded-xl" src="{escape(post["image"])}" alt="{escape(post["title"])}"><p class="mt-4 text-slate-600">{escape(post["excerpt"])}</p><a class="inline-block mt-4 font-semibold text-emerald-700" href="{href}">Read post →</a></article>')
+        directory.append(f'<div class="px-5 py-2.5 flex items-center justify-between gap-3 text-xs"><a href="{href}" class="text-slate-800 hover:text-emerald-700">#{index:02} · {escape(post["title"])} ({escape(post["category"])})</a><time class="text-slate-400 shrink-0" datetime="{post["date"]}">{post["date"]}</time></div>')
+        feed_image = f'<img class="mt-4 w-full h-auto object-contain rounded-xl" src="{escape(post["image"])}" alt="{escape(post["title"])}">' if post["image"] else ""
+        feed.append(f'<article class="bg-white rounded-2xl border border-slate-200 p-6 naver-shadow"><p class="text-xs text-emerald-700">{escape(post["categoryKo"])} · {post["displayDate"]}</p><h2 class="mt-3 text-xl font-bold"><a href="{href}">{escape(post["title"])}</a></h2>{feed_image}<p class="mt-4 text-slate-600">{escape(post["excerpt"])}</p><a class="inline-block mt-4 font-semibold text-emerald-700" href="{href}">Read post →</a></article>')
         (OUT / "posts" / f"{post['id']}.html").write_text(post_page(post, base_head))
     home = home.replace("<!-- POST_DIRECTORY -->", "\n".join(directory)).replace("<!-- POST_FEED -->", "\n".join(feed))
     years = Counter(post["year"] for post in posts)

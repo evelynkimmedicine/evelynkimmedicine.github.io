@@ -5,7 +5,7 @@ category: Presentation
 categoryKo: Presentation
 title: Qualitative Analysis of BetaIV-Spectrin Protein in the Axon Initial Segment
 subtitle: Kim, N., Best, M.N., Lim, Y., Ferenc, N.N., Bloom, G.S. (2022) · Virginia Section of ACS & UVA Dept of Chemistry
-image: /photos/research.jpg
+image: ""
 tags:
 - Tau Pathology
 - BetaIV-Spectrin

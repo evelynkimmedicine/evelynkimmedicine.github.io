@@ -5,7 +5,7 @@ category: Presentation
 categoryKo: Presentation
 title: 'Modulation of Histone H3 Acetylation at K18 and K27 by EZ115HAT: Implications for Memory Processes in Alzheimer’s Disease Treatment'
 subtitle: Evelyn N. Kim, Coleman D. Barry, Elisa Calcagno, Elisa Zuccarello, Carlos Navedo, Steve B. Garcia Gutierrez, Erica Acquarone, Ottavio Arancio (2025) · Taub Institute, Columbia University
-image: /photos/research.jpg
+image: ""
 tags:
 - Alzheimer's Disease
 - Epigenetics

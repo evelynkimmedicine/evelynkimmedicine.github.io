@@ -5,7 +5,7 @@ category: Presentation
 categoryKo: Presentation
 title: Tracking Alzheimer’s Disease Progression Through Multiplex IHC Biomarker Analysis
 subtitle: Kim, N., Bloom, G.S. (2023) · Virginia Section of ACS & UVA Dept of Chemistry Undergraduate Research Symposium
-image: /photos/research.jpg
+image: ""
 tags:
 - Alzheimer's Disease
 - Multiplex IHC

@@ -5,7 +5,7 @@ category: Publication
 categoryKo: Publication
 title: Extracellular Tau Oligomers Damage the Axon Initial Segment by an Endogenous Tau-Dependent Mechanism
 subtitle: 'Best, M.N., Lim, Y., Ferenc, N., Kim, N., et al., Bloom, G.S. (2023) · Alzheimer''s & Dementia, 19: e078491'
-image: /photos/research.jpg
+image: ""
 sourceUrl: https://doi.org/10.1002/alz.078491
 sourceLabel: 'DOI: 10.1002/alz.078491'
 tags:

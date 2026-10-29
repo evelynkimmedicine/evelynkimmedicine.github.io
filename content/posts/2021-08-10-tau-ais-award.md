@@ -5,7 +5,7 @@ category: Presentation
 categoryKo: Presentation
 title: Is Tau Pathology Linked to Disruptions of the Axon Initial Segment?
 subtitle: Evelyn Kim (2021) · University of Virginia · The Histochemical Society 2021 Capstone Awardee
-image: /photos/research.jpg
+image: ""
 tags:
 - Tau Pathology
 - Axon Initial Segment
