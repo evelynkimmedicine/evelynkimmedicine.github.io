@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCAT D-Day Countdown, Calendar & 24-Hour Daily Planner (Oct 29, 2026 – Mar 19, 2027)</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .shaded-cell {
+      background-color: #cbd5e1;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(100, 116, 139, 0.22),
+        rgba(100, 116, 139, 0.22) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+    }
+    .shaded-cell:hover {
+      background-color: #94a3b8;
+    }
+    .sleep-slot-pattern {
+      background-color: #64748b;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(51, 65, 85, 0.35),
+        rgba(51, 65, 85, 0.35) 6px,
+        transparent 6px,
+        transparent 12px
+      );
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .time-slot-cell {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Header & Countdown Banner -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30 shadow-md">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 font-bold text-lg shrink-0">
+          Rx
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">MCAT Study &amp; D-Day Calendar</h1>
+            <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+              Oct 29, 2026 – Mar 19, 2027
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">
+            Weeks start <span class="font-semibold text-white">Monday</span> + <span class="text-emerald-300 font-semibold">Weekly Study Summary Column</span> on right of Sunday • Click any date for 24-Hr Planner &amp; Blueprint/QBank Tasks
+          </p>
+        </div>
+      </div>
+
+      <!-- Key Metrics Bar -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div class="bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 flex items-center gap-2.5">
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Today (Oct 29)</div>
+            <div class="text-base sm:text-lg font-extrabold text-amber-400">D-141</div>
+          </div>
+          <div class="h-7 w-px bg-slate-700"></div>
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">MCAT Test Date</div>
+            <div class="text-sm font-bold text-emerald-400">Mar 19, 2027 (D-Day)</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2 flex items-center gap-3">
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Actual / Projected Study</div>
+            <div id="globalTotalTimeStats" class="text-sm font-bold text-indigo-300">0h 00m / 1512h</div>
+          </div>
+          <div class="h-7 w-px bg-slate-700"></div>
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Tasks Completed</div>
+            <div id="globalTaskStats" class="text-sm font-bold text-white">0 / 0 (0%)</div>
+          </div>
+          <div class="h-7 w-px bg-slate-700"></div>
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Shaded Days</div>
+            <div id="globalShadeStats" class="text-sm font-bold text-slate-200">31 days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Navigation Bar -->
+  <section class="bg-white border-b border-slate-200 sticky top-[64px] z-20 shadow-sm">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <!-- Month Jump Pills -->
+      <div class="flex items-center gap-1.5 flex-wrap" id="monthNavContainer">
+        <button id="btnAllMonths" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm transition">
+          All Months (Continuous)
+        </button>
+        <button data-month="2026-10" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Oct '26
+        </button>
+        <button data-month="2026-11" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Nov '26
+        </button>
+        <button data-month="2026-12" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Dec '26
+        </button>
+        <button data-month="2027-01" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Jan '27
+        </button>
+        <button data-month="2027-02" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Feb '27
+        </button>
+        <button data-month="2027-03" class="month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Mar '27
+        </button>
+      </div>
+
+      <!-- Filter & Action Controls -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1.5 rounded-lg cursor-pointer hover:bg-slate-200 transition">
+          <input type="checkbox" id="filterHasTasks" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+          <span>With To-Dos / Time Only</span>
+        </label>
+        <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1.5 rounded-lg cursor-pointer hover:bg-slate-200 transition">
+          <input type="checkbox" id="filterShadedOnly" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+          <span>Shaded Days Only</span>
+        </label>
+        <button id="btnResetShading" class="text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg transition" title="Restore default shaded dates">
+          Reset Default Shading
+        </button>
+      </div>
+    </div>
+
+    <!-- Legend Bar -->
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-1.5 bg-slate-50 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+      <div class="flex flex-wrap items-center gap-4">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-3.5 h-3.5 rounded bg-white border border-slate-300 inline-block"></span>
+          <span><strong class="text-slate-800">Unshaded Day Goal:</strong> 12 hrs study</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-3.5 h-3.5 rounded shaded-cell border border-slate-400 inline-block"></span>
+          <span><strong class="text-slate-800">Shaded Day Goal:</strong> 6 hrs study</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-3.5 h-3.5 rounded sleep-slot-pattern border border-slate-600 inline-block"></span>
+          <span><strong class="text-slate-800">Daily Sleep Goal:</strong> 7 hrs (9 PM – 4 AM, Grey Shaded)</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-3.5 h-3.5 rounded bg-emerald-100 border-2 border-emerald-600 inline-block"></span>
+          <span><strong class="text-slate-800">Mar 19, 2027:</strong> MCAT D-Day (D-0)</span>
+        </span>
+      </div>
+      <div class="text-[11px] text-slate-500">
+        Right of Sunday shows each week's <strong>Projected Study Time</strong> vs. <strong>Actual Studied Time</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout: Calendar + Right Side Daily Planner & To-Do Panel -->
+  <main class="max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-5 flex-1 flex flex-col xl:flex-row gap-6 items-start">
+    
+    <!-- Left/Main Column: Calendar Grid -->
+    <div class="w-full xl:flex-1 space-y-8" id="calendarMonthsWrapper">
+      <!-- Populated dynamically by JS -->
+    </div>
+
+    <!-- Right Sticky Column: Interactive 24-Hour Daily Planner + Master Task Library + To-Do Editor -->
+    <aside id="dayInspectorPanel" class="w-full xl:w-[520px] xl:sticky xl:top-32 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden shrink-0">
+      <!-- Selected Date Header -->
+      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-start justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="selectedDateDdayBadge" class="text-xs font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500 text-white">
+              D-141
+            </span>
+            <span id="selectedDateTotalTimeBadge" class="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+              Total Time: 0h 00m
+            </span>
+            <span id="selectedDateShadedBadge" class="hidden text-xs font-semibold px-2 py-0.5 rounded bg-slate-700 text-slate-200 border border-slate-600">
+              Shaded Day (6h Goal)
+            </span>
+          </div>
+          <h2 id="selectedDateTitle" class="text-base sm:text-lg font-bold mt-1">Thursday, Oct 29, 2026</h2>
+          <p id="selectedDateSubtitle" class="text-xs text-slate-300 mt-0.5">Start Date (Today) • 141 days until MCAT</p>
+        </div>
+        <button id="btnToggleDayShade" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition shrink-0">
+          Toggle Shade
+        </button>
+      </div>
+
+      <!-- Daily Study Goal & Sleep Goal Banner on Top of Daily Planner -->
+      <div class="bg-slate-800 px-4 py-2.5 border-t border-slate-700/80 grid grid-cols-2 gap-2.5 text-white">
+        <div class="bg-slate-900/80 border border-slate-700 rounded-xl p-2.5">
+          <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+            <span id="dailyStudyGoalTypeLabel">Daily Study Goal (Unshaded)</span>
+            <span id="dailyStudyGoalPct" class="text-emerald-400">0%</span>
+          </div>
+          <div class="flex items-baseline justify-between mt-0.5">
+            <span id="dailyStudyActualVsGoal" class="text-xs sm:text-sm font-extrabold text-white">0h 00m / 12h 00m</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden mt-1.5">
+            <div id="dailyStudyGoalProgressBar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 border border-slate-700 rounded-xl p-2.5">
+          <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+            <span>Daily Sleep Goal (9PM–4AM)</span>
+            <span class="px-1.5 py-0.2 rounded bg-slate-600 text-slate-200 text-[9px]">Grey Shaded</span>
+          </div>
+          <div class="flex items-baseline justify-between mt-0.5">
+            <span id="dailySleepActualVsGoal" class="text-xs sm:text-sm font-extrabold text-slate-200">7h 00m / 7h 00m</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden mt-1.5">
+            <div id="dailySleepGoalProgressBar" class="h-full bg-slate-400 transition-all duration-300" style="width: 100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prev / Today / Next Day Navigation Bar -->
+      <div class="bg-slate-800/95 px-4 py-2 border-t border-slate-800 flex items-center justify-between gap-2">
+        <button id="btnPrevDay" class="px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs font-semibold text-slate-200 transition">
+          ← Previous Day
+        </button>
+        <button id="btnJumpToday" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-xs font-semibold text-amber-300 border border-amber-400/30 transition">
+          Oct 29 (Today)
+        </button>
+        <button id="btnNextDay" class="px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs font-semibold text-slate-200 transition">
+          Next Day →
+        </button>
+      </div>
+
+      <!-- Panel Mode Tabs: Both View / 24-Hr Planner / To-Do & Curriculum Bank -->
+      <div class="bg-slate-100 p-1.5 border-b border-slate-200 flex items-center gap-1">
+        <button type="button" id="tabViewBoth" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition">
+          24-Hr Planner + To-Dos
+        </button>
+        <button type="button" id="tabViewPlannerOnly" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+          24-Hr Planner Only
+        </button>
+        <button type="button" id="tabViewTodosOnly" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+          To-Do List &amp; Notes
+        </button>
+      </div>
+
+      <div class="p-4 space-y-5 max-h-[calc(100vh-275px)] overflow-y-auto custom-scrollbar">
+        
+        <!-- SECTION 1: 24-HOUR (4 AM – 3 AM) 10-MINUTE DAILY PLANNER -->
+        <div id="plannerSectionWrapper" class="space-y-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div>
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">
+                24-Hour Daily Planner (4 AM – 3 AM)
+              </h3>
+              <p class="text-[11px] text-slate-500">
+                1 box = 10 mins • 9 PM – 4 AM pre-shaded Grey for Sleep (7h goal)
+              </p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button
+                type="button"
+                id="btnRestoreSleep"
+                class="text-[11px] font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg border border-slate-300 transition"
+                title="Restore 9 PM – 4 AM Grey Sleep Goal"
+              >
+                Reset 9PM–4AM Sleep
+              </button>
+              <button
+                type="button"
+                id="btnClearAllDaySlots"
+                class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2 py-1 rounded-lg border border-rose-200 transition"
+              >
+                Clear Day Grid
+              </button>
+            </div>
+          </div>
+
+          <!-- Task Label & Color Palette Toolbar for Drag-and-Shade -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2.5">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <div class="flex-1">
+                <label for="plannerTaskInput" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                  Task Name to Paint / Label on Shaded Boxes
+                </label>
+                <input
+                  id="plannerTaskInput"
+                  type="text"
+                  placeholder="Type or select a task below, then drag 10-min boxes..."
+                  class="w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              <div class="flex items-end gap-1.5">
+                <button
+                  type="button"
+                  id="btnPaintMode"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition"
+                >
+                  Paint Task
+                </button>
+                <button
+                  type="button"
+                  id="btnEraseMode"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition"
+                >
+                  Eraser
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Swatches + Custom Color Input -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Choose Task Shade Color (Grey = Sleep)</span>
+                <span id="activeSelectionHint" class="text-[11px] font-semibold text-indigo-600"></span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-wrap" id="colorPaletteContainer">
+                <label class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 bg-white border border-slate-300 rounded-lg px-2 py-0.5 cursor-pointer hover:bg-slate-50 ml-auto">
+                  <span>Custom:</span>
+                  <input type="color" id="customColorPicker" value="#6366f1" class="w-4 h-4 border-0 p-0 bg-transparent cursor-pointer" />
+                </label>
+              </div>
+            </div>
+
+            <!-- Selected Range Quick-Apply Bar -->
+            <div id="slotSelectionActionBar" class="hidden pt-2 border-t border-slate-200 flex items-center justify-between gap-2">
+              <span id="slotSelectionRangeLabel" class="text-[11px] font-bold text-slate-700 truncate">Selected: 4:00 AM – 5:00 AM</span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" id="btnApplyToSelection" class="px-2.5 py-1 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold transition">
+                  Update Label / Color
+                </button>
+                <button type="button" id="btnDeleteSelection" class="px-2 py-1 rounded-md bg-rose-100 hover:bg-rose-200 text-rose-700 text-[11px] font-bold transition">
+                  Unshade
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 24-Hour x 6 (10-Min) Timetable Grid -->
+          <div class="border border-slate-300 rounded-xl overflow-hidden bg-white shadow-inner">
+            <!-- Top Minute Boundary Header: 0, 10, 20, 30, 40, 50, 60 -->
+            <div class="bg-slate-800 text-white border-b border-slate-700">
+              <div class="grid grid-cols-[58px_1fr] items-center">
+                <div class="px-2 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-300 border-r border-slate-700 text-center">
+                  Hour
+                </div>
+                <div class="px-1 py-1">
+                  <div class="flex justify-between text-[10px] font-extrabold text-indigo-200 px-0.5 leading-none">
+                    <span>0</span>
+                    <span>10</span>
+                    <span>20</span>
+                    <span>30</span>
+                    <span>40</span>
+                    <span>50</span>
+                    <span>60</span>
+                  </div>
+                  <div class="grid grid-cols-6 text-center text-[9px] text-slate-400 font-medium mt-0.5">
+                    <span>0–10m</span>
+                    <span>10–20m</span>
+                    <span>20–30m</span>
+                    <span>30–40m</span>
+                    <span>40–50m</span>
+                    <span>50–60m</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 24 Hour Rows Container (4 AM down to 3 AM) -->
+            <div id="hourlyGridRows" class="divide-y divide-slate-200 max-h-[380px] overflow-y-auto custom-scrollbar">
+              <!-- Populated dynamically by JS -->
+            </div>
+          </div>
+
+          <!-- Recorded Time Breakdown for Selected Day -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">Recorded Study Time Breakdown</span>
+              <span id="plannerSummaryTotal" class="text-xs font-extrabold text-indigo-700">Total Study Time: 0h 00m</span>
+            </div>
+            <div id="plannerTaskBreakdownList" class="space-y-1 text-xs">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: SELECTABLE CURRICULUM & QBANK TASK SELECTOR + CHECKLIST TO-DO ITEMS -->
+        <div id="todoSectionWrapper" class="pt-4 border-t border-slate-200 space-y-4">
+          
+          <!-- Master Task Selector (Blueprint Modules, End of Chapter Tests, Blueprint/Kaplan/Bootcamp QBanks, Jack Sparrow Flashcards) -->
+          <div class="bg-indigo-50/60 border border-indigo-200/80 rounded-xl p-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <h4 class="text-xs font-extrabold uppercase tracking-wider text-indigo-950">
+                  Select Task from Curriculum &amp; QBank Library
+                </h4>
+                <p class="text-[11px] text-indigo-700">
+                  Completed tasks are crossed out (✓) across the library
+                </p>
+              </div>
+              <span id="catalogCompletedBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
+                0 Completed
+              </span>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex items-center gap-1 flex-wrap" id="catalogCategoryFilterBar">
+              <button type="button" data-cat="ALL" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-bold bg-indigo-600 text-white transition">All</button>
+              <button type="button" data-cat="BP_MOD" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Blueprint Modules</button>
+              <button type="button" data-cat="BP_EOC" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">End of Ch. Tests</button>
+              <button type="button" data-cat="BP_QBANK" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Blueprint QBank</button>
+              <button type="button" data-cat="KAPLAN_QBANK" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Kaplan QBank</button>
+              <button type="button" data-cat="BOOTCAMP_QBANK" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Bootcamp QBank</button>
+              <button type="button" data-cat="JACK_SPARROW" class="cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Jack Sparrow Cards</button>
+            </div>
+
+            <!-- Search + Dropdown Selector -->
+            <div class="space-y-1.5">
+              <input
+                id="catalogSearchInput"
+                type="text"
+                placeholder="Search modules, Ch. tests, QBanks, Jack Sparrow (e.g., Biology Ch.2, Enzymes, CARS)..."
+                class="w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <div class="flex gap-1.5">
+                <select
+                  id="catalogTaskSelect"
+                  class="flex-1 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 truncate"
+                >
+                  <!-- Populated dynamically -->
+                </select>
+                <button
+                  type="button"
+                  id="btnAddCatalogTask"
+                  class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition shrink-0"
+                >
+                  + Add Task
+                </button>
+              </div>
+            </div>
+
+            <!-- Scrollable Mini-Browser with Cross-Out Support -->
+            <details class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+              <summary class="px-2.5 py-1.5 text-[11px] font-bold text-slate-700 cursor-pointer hover:bg-slate-50 select-none flex items-center justify-between">
+                <span>Browse &amp; Cross Out Curriculum / QBank Checklist (<span id="catalogFilteredCount">0</span> items)</span>
+                <span class="text-[10px] text-indigo-600">Click to expand ▾</span>
+              </summary>
+              <div id="catalogBrowserList" class="max-h-52 overflow-y-auto divide-y divide-slate-100 p-1.5 custom-scrollbar">
+                <!-- Populated dynamically -->
+              </div>
+            </details>
+          </div>
+
+          <!-- Custom Task Input Form -->
+          <form id="todoAddForm" class="space-y-2">
+            <label for="todoInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700">
+              Or Add Custom Daily To-Do Item
+            </label>
+            <div class="flex gap-2">
+              <input
+                id="todoInput"
+                type="text"
+                placeholder="e.g., Biology Ch.2 End of Chapter Test..."
+                class="flex-1 rounded-xl border border-slate-300 px-3 py-1.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+              />
+              <button
+                type="submit"
+                class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition shrink-0"
+              >
+                Add
+              </button>
+            </div>
+            <!-- Quick Preset Tags -->
+            <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
+              <span class="text-[10px] text-slate-400 mr-0.5">Quick add:</span>
+              <button type="button" data-preset="Blueprint QBank" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Blueprint QBank</button>
+              <button type="button" data-preset="Kaplan QBank" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Kaplan QBank</button>
+              <button type="button" data-preset="Bootcamp QBank" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Bootcamp QBank</button>
+              <button type="button" data-preset="Jack Sparrow Flash Cards" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Jack Sparrow Cards</button>
+              <button type="button" data-preset="Chem/Phys Block" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Chem/Phys</button>
+              <button type="button" data-preset="CARS Daily Passages" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ CARS</button>
+              <button type="button" data-preset="Bio/Biochem Review" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Bio/Biochem</button>
+              <button type="button" data-preset="Psych/Soc Anki" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Psych/Soc</button>
+              <button type="button" data-preset="Full-Length Practice Exam" class="preset-tag-btn text-[10px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 font-medium transition">+ Full-Length</button>
+            </div>
+          </form>
+
+          <!-- Day Tasks List (with % Correction and % Completion input buttons) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Day's Tasks (Click "% Stats" for Correction &amp; Completion)</h4>
+              <span id="selectedDayTaskCount" class="text-xs font-medium text-slate-500">0 items</span>
+            </div>
+            <ul id="selectedDayTodoList" class="space-y-2 max-h-80 overflow-y-auto custom-scrollbar pr-1">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+
+          <!-- Day Notes / Study Reflection -->
+          <div class="pt-2 border-t border-slate-100">
+            <label for="dayNotesInput" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+              Daily Study Notes / Reflection
+            </label>
+            <textarea
+              id="dayNotesInput"
+              rows="2"
+              placeholder="Add study notes, FL section scores, or reminders..."
+              class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            ></textarea>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastBanner" class="fixed bottom-4 right-4 z-50 hidden bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg border border-slate-700">
+    Saved!
+  </div>
+
+  <script>
+    (function () {
+      const CALENDAR_FIRST_MONDAY_STR = '2026-10-26';
+      const START_DATE_STR = '2026-10-29';
+      const END_DATE_STR = '2027-03-19';
+      const SHADE_START_STR = '2026-10-30';
+      const SHADE_END_STR = '2026-12-02';
+      const STORAGE_KEY = 'mcat_calendar_state_v3';
+      const LEGACY_KEYS = ['mcat_calendar_state_v2', 'mcat_calendar_state_v1'];
+      const SLEEP_COLOR_HEX = '#64748b';
+
+      // Default sleep slots: 9 PM (hourIndex 17, slot 102) to 4 AM (hourIndex 23 end, slot 143) = 42 slots = 7 hours
+      const DEFAULT_SLEEP_START_SLOT = 17 * 6; // 102 (9:00 PM)
+      const DEFAULT_SLEEP_END_SLOT = 24 * 6 - 1; // 143 (3:50-4:00 AM)
+
+      // Extra shaded dates requested by user
+      const EXTRA_SHADED_DATES = new Set([
+        '2026-12-07',
+        '2026-12-08',
+        '2026-12-22',
+        '2026-12-23',
+        '2026-12-24',
+        '2026-12-25',
+        '2026-12-31',
+        '2027-01-01',
+        '2027-01-08',
+        '2027-01-09',
+        '2027-01-10',
+        '2027-02-05',
+        '2027-02-06',
+        '2027-02-07'
+      ]);
+
+      const EXPLICIT_UNSHADED_DATES = new Set([
+        '2026-10-27'
+      ]);
+
+      // Master Curriculum & QBank Task Catalog (imported from blueprint modules and chapter.pdf + QBanks.pdf + End of Chapter Tests + Jack Sparrow)
+      const MASTER_TASK_CATALOG = [
+        // --- General Core Selection Options ---
+        { cat: 'BP_QBANK', title: 'Blueprint QBank (Custom Block)' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan QBank (Custom Block)' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp QBank (Custom Block)' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards (Daily Review)' },
+
+        // --- BIOLOGY: Blueprint Modules & End of Chapter Tests (Ch. 1–12) ---
+        { cat: 'BP_EOC', title: 'Biology Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.2: Eukaryotic Cells, pp. 26 - 35' },
+        { cat: 'BP_MOD', title: 'Biology Ch.2: Cell Cycle, Mitosis, and Meiosis, pp. 36 - 40' },
+        { cat: 'BP_MOD', title: 'Biology Ch.2: Microbiology, pp. 40 - 52' },
+        { cat: 'BP_EOC', title: 'Biology Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.3: The Genetic Code and DNA, pp. 55 - 58' },
+        { cat: 'BP_MOD', title: 'Biology Ch.3: DNA Packaging and Organization, pp. 58 - 65' },
+        { cat: 'BP_MOD', title: 'Biology Ch.3: Transcription and Translation, pp. 65 - 71' },
+        { cat: 'BP_MOD', title: 'Biology Ch.3: DNA Mutation and Repair, pp. 72 - 77' },
+        { cat: 'BP_EOC', title: 'Biology Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.4: Genetic Inheritance, pp. 79 - 89' },
+        { cat: 'BP_MOD', title: 'Biology Ch.4: Population Genetics and Evolution, pp. 89 - 96' },
+        { cat: 'BP_EOC', title: 'Biology Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.5: Gene Expression, pp. 99 - 108, 110 - 114' },
+        { cat: 'BP_MOD', title: 'Biology Ch.5: Cancer, pp. 108 - 110' },
+        { cat: 'BP_MOD', title: 'Biology Ch.5: Biotechnology, pp. 114 - 115' },
+        { cat: 'BP_MOD', title: 'Biology Ch.5: Biochemical Lab Techniques, pp. 115 - 124' },
+        { cat: 'BP_EOC', title: 'Biology Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.6: Nervous System Divisions and Parts of the Brain, pp. 127 - 133' },
+        { cat: 'BP_MOD', title: 'Biology Ch.6: Neurons, pp. 133 - 148' },
+        { cat: 'BP_EOC', title: 'Biology Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.7: Endocrine Mechanisms and Regulation, pp. 150 - 157' },
+        { cat: 'BP_MOD', title: 'Biology Ch.7: Endocrine Glands, Hormones, and Functions, pp. 157 - 179' },
+        { cat: 'BP_EOC', title: 'Biology Ch.7 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.8: Reproductive System, pp. 181 - 187' },
+        { cat: 'BP_MOD', title: 'Biology Ch.8: Development, pp. 187 - 192' },
+        { cat: 'BP_MOD', title: 'Biology Ch.8: Hormonal Control of Reproduction, pp. 192 - 198' },
+        { cat: 'BP_EOC', title: 'Biology Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.9: Respiratory System, pp. 201 - 208' },
+        { cat: 'BP_MOD', title: 'Biology Ch.9: Circulatory System, pp. 208 - 226' },
+        { cat: 'BP_EOC', title: 'Biology Ch.9 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.10: Digestive System, pp. 229 - 245' },
+        { cat: 'BP_MOD', title: 'Biology Ch.10: Excretory System, pp. 245 - 255' },
+        { cat: 'BP_EOC', title: 'Biology Ch.10 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.11: Immune System, pp. 257 - 260, 267 - 274' },
+        { cat: 'BP_MOD', title: 'Biology Ch.11: Innate and Adaptive Immunity, pp. 260 - 267' },
+        { cat: 'BP_EOC', title: 'Biology Ch.11 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biology Ch.12: Skeletal System and Connective Tissue, pp. 277 - 284' },
+        { cat: 'BP_MOD', title: 'Biology Ch.12: Muscle and Skin, pp. 284 - 298' },
+        { cat: 'BP_EOC', title: 'Biology Ch.12 End of Chapter Test' },
+
+        // --- PHYSICS: Blueprint Modules & End of Chapter Tests (Ch. 1–10) ---
+        { cat: 'BP_MOD', title: 'Physics Ch.1: Units and Vectors, pp. 1 - 9' },
+        { cat: 'BP_MOD', title: 'Physics Ch.1: Kinematics, pp. 9 - 19' },
+        { cat: 'BP_EOC', title: 'Physics Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.2: Force and Newton’s Laws, pp. 21 - 23' },
+        { cat: 'BP_MOD', title: 'Physics Ch.2: Applications of Force, pp. 23 - 33' },
+        { cat: 'BP_MOD', title: 'Physics Ch.2: Torque, pp. 33 - 36' },
+        { cat: 'BP_MOD', title: 'Physics Ch.2: Work and Power, pp. 36 - 42' },
+        { cat: 'BP_EOC', title: 'Physics Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.3: Energy, pp. 45 - 55' },
+        { cat: 'BP_EOC', title: 'Physics Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.4: Thermodynamics, pp. 57 - 70' },
+        { cat: 'BP_EOC', title: 'Physics Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.5: Fluid Density and Pressure, pp. 73 - 76' },
+        { cat: 'BP_MOD', title: 'Physics Ch.5: Fluid Hydrostatics, pp. 76 - 81' },
+        { cat: 'BP_MOD', title: 'Physics Ch.5: Fluid Dynamics, pp. 81 - 88' },
+        { cat: 'BP_EOC', title: 'Physics Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.6: Electricity, pp. 91 - 103' },
+        { cat: 'BP_EOC', title: 'Physics Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.7: Ohm’s Law, pp. 105 - 108' },
+        { cat: 'BP_MOD', title: 'Physics Ch.7: Circuits, pp. 108 - 114' },
+        { cat: 'BP_MOD', title: 'Physics Ch.7: Magnetism, pp. 115 - 120' },
+        { cat: 'BP_EOC', title: 'Physics Ch.7 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.8: Periodic Motion and Waves, pp. 123 - 129' },
+        { cat: 'BP_MOD', title: 'Physics Ch.8: Sound, pp. 129 - 138' },
+        { cat: 'BP_EOC', title: 'Physics Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.9: Electromagnetic Waves, pp. 141 - 145' },
+        { cat: 'BP_MOD', title: 'Physics Ch.9: Reflection, Refraction, Dispersion, and Diffraction, pp. 145 - 152' },
+        { cat: 'BP_MOD', title: 'Physics Ch.9: Mirrors and Lenses, pp. 153 - 164' },
+        { cat: 'BP_EOC', title: 'Physics Ch.9 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Physics Ch.10: Quantum and Nuclear Physics, pp. 167 - 183' },
+        { cat: 'BP_EOC', title: 'Physics Ch.10 End of Chapter Test' },
+
+        // --- CHEMISTRY: Blueprint Modules & End of Chapter Tests (Ch. 1–12) ---
+        { cat: 'BP_MOD', title: 'Chemistry Ch.1: Atomic Structure, Quantum Numbers, and Electron Configuration, pp. 1 - 10' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.1: Periodic Structure and Trends, pp. 10 - 16' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.2: Bonding, pp. 19 - 25' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.2: Lewis Structure and VSEPR, pp. 26 - 34' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.3: Chemical Reactions, pp. 37 - 41' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.3: Stoichiometry and Basic Chemistry Math, pp. 41 - 47' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.4: Equilibrium, pp. 49 - 55' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.4: Thermodynamics and Gibbs Free Energy, pp. 55 - 67' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.5: Phases and Phase Changes, pp. 69 - 74' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.5: Gases, pp. 74 - 78' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.5: Solutions and Solubility, pp. 78 - 84' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.5: Colligative Properties, pp. 78 - 84' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.6: Chemical Kinetics, pp. 87 - 96' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.7: Acid-Base Chemistry, pp. 99 - 107' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.7: Buffers and Titrations, pp. 107 - 114' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.7 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.8: Redox Reactions, pp. 117 - 123' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.8: Electrochemistry, pp. 123 - 134' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.9: Nomenclature and Structure, pp. 137 - 144' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.9: Introduction to Isomers, pp. 145 - 151' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.9: Chirality, pp. 152 - 158' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.9 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.10: Hydrocarbon Compounds, pp. 161 - 165' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.10: Alcohols and Phenols, pp. 166 - 172' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.10: Aldehydes and Ketones, pp. 172 - 180' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.10: Carboxylic Acids and their Derivatives, pp. 180 - 190' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.10: Nitrogen- and Sulfur-Containing Groups, pp. 190 - 192' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.10 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.11: Elimination and Addition, pp. 195 - 200' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.11: Nucleophilic Substitution, pp. 200 - 204' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.11: Enolate Chemistry, pp. 204 - 212' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.11 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.12: Spectroscopy and Spectrometry, pp. 215 - 224' },
+        { cat: 'BP_MOD', title: 'Chemistry Ch.12: Organic Separatory Techniques, pp. 224 - 231' },
+        { cat: 'BP_EOC', title: 'Chemistry Ch.12 End of Chapter Test' },
+
+        // --- BIOCHEMISTRY: Blueprint Modules & End of Chapter Tests (Ch. 1–12) ---
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.1: Biochemistry Basics, pp. 1 - 12' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.2: Amino Acid Structure and Properties, pp. 15 - 22' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.2: Protein Structure, pp. 22 - 27' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.2: Amino Acid-Base Chemistry, pp. 27 - 31' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.2: Amino Acid Reactions, pp. 31 - 36' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.2: Protein Stability, pp. 22 - 27' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.3: Enzymes, pp. 39 - 44' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.3: Enzyme Regulation, pp. 44 - 46' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.3: Enzyme Kinetics and Inhibition, pp. 46 - 56' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.4: Non-Enzymatic Protein Function, pp. 59 - 66' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.4: Biosignaling, pp. 67 - 71' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.5: Analytic Techniques, pp. 75 - 86' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.6: Carbohydrate Structure, pp. 89 - 95' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.6: Types of Carbohydrates, pp. 95 - 97' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.6: Carbohydrate Stereochemistry, pp. 98 - 101' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.6: Carbohydrate Reactions, pp. 101 - 104' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.7: Glycolysis and Gluconeogenesis, pp. 111 - 116' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.7: Glycogen Metabolism and the Pentose Phosphate Pathway, pp. 116 - 126' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.7 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.8: Aerobic Carbohydrate Metabolism, pp. 129 - 142' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.9: Lipids, pp. 125 - 151' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.9: Lipid Metabolism, pp. 152 - 159' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.9 End of Chapter Test' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.10 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.11: Plasma Membrane Structure, pp. 173 - 177' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.11: Membrane Transport, pp. 177 - 187' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.11 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.12: Bioenergetics, pp. 189 - 191' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.12: Biological Energy Sources, pp. 191 - 195' },
+        { cat: 'BP_MOD', title: 'Biochemistry Ch.12: Role of Hormones in Metabolism, pp. 195 - 200' },
+        { cat: 'BP_EOC', title: 'Biochemistry Ch.12 End of Chapter Test' },
+
+        // --- PSYCHOLOGY & SOCIOLOGY: Blueprint Modules & End of Chapter Tests (Ch. 1–12) ---
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.1: Experimental Design, pp. 1 - 8' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.1: Experimental Methods and Measures, pp. 8 - 15' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.2: Biological Fundamentals of Behavior, pp. 17 - 24' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.2: Behavior and the Endocrine and Nervous Systems, pp. 24 - 42' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.3: Sensory Processing and Perception, pp. 45 - 55' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.3: Specific Senses, pp. 55 - 67' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.4: Consciousness, pp. 69 - 77' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.4: Attention, pp. 77 - 82' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.5: Cognition, pp. 85 - 94' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.5: Language, pp. 94 - 100' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.6: Memory, pp. 103 - 108' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.6: Learning, pp. 108 - 115' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.6: Emotion and Stress, pp. 115 - 123' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.7: Motivation and Attitude, pp. 125 - 131' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.7: Personality, pp. 131 - 141' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.7 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.8: Psychological Disorders, pp. 143 - 151' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.9: Social Effects on Behavior, pp. 153 - 163' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.9: Attributions, Prejudice, Stereotype, and Discrimination, pp. 163 - 171' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.9: Social Groups, pp. 189 - 195' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.9 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.10: Social Interaction, pp. 173 - 180' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.10: Identity, pp. 180 - 187' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.10 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.11: Social Structures, pp. 195 - 206' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.11 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.12: Culture, pp. 209 - 213' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.12: Demographics, pp. 213 - 220' },
+        { cat: 'BP_MOD', title: 'Psych/Soc Ch.12: Social Inequality, pp. 220 - 227' },
+        { cat: 'BP_EOC', title: 'Psych/Soc Ch.12 End of Chapter Test' },
+
+        // --- STRATEGY & CARS: Blueprint Modules & End of Chapter Tests (Ch. 1–14) ---
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: How to Study MCAT Science, pp. 135 - 148' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: Science Questions: Wrong Answers and PoE, pp. 289 - 296' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: How to Use Your Course, pp. 4 - 5' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: Coping with Test Anxiety, pp. 6 - 7' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: Med Admissions, pp. 7 - 11' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.1: CARS Question Types: Skill 2, pp. 94 - 98' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.1 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.2: How to Read a CARS Passage, pp. 15 - 24' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.2 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.3: Pacing in CARS, pp. 27 - 36' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.3 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.4: Opinions in CARS Passages, pp. 39 - 64' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.4 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.5: Arguments in CARS Passages 1, pp. 67 - 74' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.5: Arguments in CARS Passages 2, pp. 74 - 82' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.5 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.6: CARS Question Types: Skill 1, pp. 89 - 94' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.6: CARS Question Types: Skill 3, pp. 98 - 104' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.6 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.7: Tackling CARS Questions, pp. 107 - 115' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.7: CARS Questions: Identifying Wrong Answers, pp. 115 - 127' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.7: CARS Elimination Strategies, pp. 127 - 133' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.7: Improving Your Score in CARS, pp. 130 - 133' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.7 End of Chapter Test' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.8 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.9: How to Read a Science Passage, pp. 151 - 173' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.9 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.10: Pacing in Science, pp. 175 - 187' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.10 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.11: Math and Formulas 1, pp. 189 - 197' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.11: Math and Formulas 2, pp. 197 - 205' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.11: Math and Formulas 3, pp. 205 - 217' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.11 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.12: Analyzing Figures 1, pp. 219 - 226' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.12: Analyzing Figures 2, pp. 226 - 233' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.12: Analyzing Figures 3, pp. 233 - 241' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.12 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.13: Experimental Design 1, pp. 243 - 255' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.13: Experimental Design 2, pp. 255 - 262' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.13: Experimental Design 3, pp. 262 - 275' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.13 End of Chapter Test' },
+        { cat: 'BP_MOD', title: 'Strategy & CARS Ch.14: Tackling Science Questions, pp. 277 - 289' },
+        { cat: 'BP_EOC', title: 'Strategy & CARS Ch.14 End of Chapter Test' },
+
+        // --- BLUEPRINT QBANK (from QBanks.pdf) ---
+        { cat: 'BP_QBANK', title: 'Blueprint Atomic Structure, Quantum Numbers, and Electron Configuration [65]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Periodic Structure and Trends [33]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Bonding [53]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Lewis Structure and VSEPR [26]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Chemical Reactions [47]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Stoichiometry and Basic Math [83]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Chemical Kinetics [22]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Equilibrium [22]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Phase and Phase Changes [21]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Gases [21]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Thermodynamics and Gibbs Free Energy [17]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Solutions and Solubility [37]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Colligative Properties [21]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Acid-Base Chemistry [70]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Buffers and Titrations [11]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Redox Reactions [30]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Electrochemistry [27]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Nomenclature [31]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Hydrocarbon Compounds [6]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Introduction to Isomers [21]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Chirality [19]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Carbohydrate Structure [20]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Alcohols and Phenols [52]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Aldehydes and Ketones [31]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Nucleophilic Substitution [32]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Elimination and Addition [7]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Enolate Chemistry [13]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Types of Carbohydrates [9]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Carbohydrate Reactions [12]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Carbohydrate Stereochemistry [15]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Carboxylic Acid and Derivatives [54]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Nitrogen and Sulfur-Containing Groups [14]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Organic Separatory Techniques [44]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Units and Vectors [13]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Kinematics [24]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Force and Newton’s Laws [30]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Torque [9]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Work and Power [20]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Energy [36]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Thermodynamics [6]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Fluid Density and Pressure [19]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Fluids Hydrostatics [5]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Fluid Dynamics [16]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Periodic Motion and Waves [30]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Sound [22]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Reflection, Refraction, Diffraction, and Dispersion [21]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Mirrors and Lenses [17]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Electricity [47]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Magnetism [17]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Ohm’s Law [10]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Circuits [40]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Quantum and Nuclear Physics [24]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Eukaryotic Cells [60]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Cell Cycle, Mitosis, Meiosis [62]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Reproductive System [30]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Hormonal Control of Reproduction [15]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Development [23]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Nervous System Divisions [28]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Neurons [36]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Endocrine Mechanisms [19]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Endocrine Glands and Hormones [62]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Respiratory System [32]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Circulatory System [65]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Immune System [45]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Innate vs Adaptive Immunity [4]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Digestive System [32]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Excretory System [34]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Skeletal System [31]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Muscle and Skin [51]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Genetic Inheritance [59]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Genetic Linkage [7]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Population, Genetics, and Evolution [33]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Biochemistry Basics [40]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Amino Acid Structure and Properties [85]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Amino Acid Reactions [14]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Protein Structure [31]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Amino Acid-Base Chemistry [23]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Enzymes [80]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Enzyme Regulation [32]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Enzyme Kinetics/Inhibition [53]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Non-enzymatic Protein Function [32]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Protein Stability [7]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Biosignaling [27]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Lipids [25]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Plasma Membrane Structure [36]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Membrane Transport [52]' },
+        { cat: 'BP_QBANK', title: 'Blueprint DNA Packaging and Organization [25]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Biotechnology [45]' },
+        { cat: 'BP_QBANK', title: 'Blueprint DNA Mutation and Repair [33]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Cancer [19]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Analytic Techniques [30]' },
+        { cat: 'BP_QBANK', title: 'Blueprint The Genetic Codes and DNA [76]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Microbiology [83]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Transcription and Translation [95]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Expression [37]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Glycolysis and Gluconeogenesis [93]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Glycogen and Pentose Phosphate Pathway [24]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Aerobic Carbohydrate Metabolism [57]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Lipid Metabolism [26]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Biological Energy Sources [12]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Bioenergetics [26]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Role of Hormones in Metabolism [18]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Sensation and Perception [67]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Specific Senses [44]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Learning [60]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Memory [59]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Consciousness and Attention [22]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Cognition [59]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Language [18]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Emotion and Stress [33]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Motivation and Attitude [37]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Specific Stress [44]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Identity [42]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Personality [17]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Psychological Disorders [57]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Social Groups [29]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Social Effects on Behavior [95]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Social Interactions [56]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Prejudice, Stereotype, and Discrimination [41]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Social Structures [60]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Demographics [53]' },
+        { cat: 'BP_QBANK', title: 'Blueprint Social Inequality [48]' },
+        { cat: 'BP_QBANK', title: 'Blueprint CARS (9 passages/day)' },
+
+        // --- KAPLAN QBANK (from QBanks.pdf) ---
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Atomic Structure [28]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Periodic Table [36]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Bonding and Chemical Interactions [31]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Compounds and Stoichiometry [22]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Chemical Kinetics [42]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Equilibrium [26]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Gas Phase [22]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Thermochemistry [41]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Solutions [36]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Acids and Bases [19]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Oxidation-Reduction Reactions [13]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Electrochemistry [21]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Nomenclature [22]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Isomers [25]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Bonding [18]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Analyzing Organic Reactions [16]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Alcohols [13]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Aldehydes and Ketones I [24]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Aldehydes and Ketones II [13]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Carboxylic Acids [28]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Carboxylic Acid Derivatives [31]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Nitrogen and Phosphorus-Containing Compounds [3]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Spectroscopy [27]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Separation and Purifications [33]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Kinematics and Dynamics [29]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Work and Energy [35]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Thermodynamics [42]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Fluids [39]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Waves and Sound [44]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Light and Optics [42]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Electrostatics and Magnetism [26]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Circuits [47]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Atomic and Nuclear Phenomena [11]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Cell [55]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Reproduction [59]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Embryogenesis and Development [27]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Nervous System [67]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Endocrine System [79]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Respiratory System [48]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Cardiovascular System [59]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Immune System [45]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Digestive System [48]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Homeostasis [56]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Musculoskeletal System [36]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Genetics and Evolution [66]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Amino Acids, Peptides, and Proteins [80]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Enzymes [78]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Nonenzymatic Protein Function and Analysis [33]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Carbohydrate Structure and Function [16]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Lipid Structure and Function [15]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Biological Membranes [40]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan DNA and Biotechnology [51]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan RNA and The Genetic Codes [56]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Carbohydrate Metabolism I: Anaerobic Respiration [27]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Carbohydrate Metabolism II: Aerobic Respiration [51]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Lipid and Amino Acid Metabolism [18]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Bioenergetics and Regulation of Metabolism [89]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Biology and Behavior [63]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Sensation and Perception [57]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Learning and Memory [76]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Cognition, Consciousness, and Language [79]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Motivation, Emotion, and Stress [72]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Identity and Personality [53]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Psychological Disorders [35]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Social Processes, Attitudes, and Behavior [50]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Social Interaction [52]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Social Thinking [55]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Social Structure and Demographics [82]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan Social Stratification [32]' },
+        { cat: 'KAPLAN_QBANK', title: 'Kaplan CARS (9 passages/day)' },
+
+        // --- BOOTCAMP QBANK (from QBanks.pdf) ---
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Reactions and Stoichiometry [23]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Kinetics [15]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Equilibrium [14]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Gases [14]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Thermodynamics [26]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Solutions [16]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Acids and Bases [9]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Redox Reactions and Electrochemistry [13]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Nomenclature [4]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Isomers [10]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Bonding and Molecular Structure [5]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Overview of Organic Reactions [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Alcohols [12]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Aldehydes and Ketones [24]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Carboxylic Acid Derivatives [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Amines and Acids [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Spectroscopy [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Separations and Purifications [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Translational Motion [7]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Force and Equilibrium [9]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Work and Energy [35]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Fluids [23]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Waves and Sound [12]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Light and Optics [24]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Electrostatics and Magnetism [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Circuits [22]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Eukaryotic Cells [30]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Prokaryotes and Viruses [18]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp DNA Structure, Replication, and Repair [8]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Reproductive System [1]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Cell Division and Genetics [24]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Nervous System [15]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Endocrine System [16]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Respiratory System [4]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Circulatory System [19]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Immune System [12]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Digestive System [8]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Excretory System [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Musculoskeletal and Skin Systems [11]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Evolution [5]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Amino Acids [56]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Peptides and Proteins [44]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Enzyme Activity and Regulations [52]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Enzyme Kinetics [36]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Carbohydrates [14]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Lipids [14]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Biotechnology and Lab Technology [42]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Nucleic Acids [24]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Transcription and Translation [29]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Biology Experimental Design and Analysis [10]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Biochemistry Experimental Design and Analysis [27]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Carbohydrate Metabolism [16]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Aerobic Respiration [19]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Lipid and Protein Metabolism [4]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Biology and Behavior [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Sensation and Perception [3]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Learning [4]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Memory [1]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Cognition, Consciousness, and Language [5]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Motivation, Affect, and Attitudes [5]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Identity and Personality [6]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Psychological Disorders [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Social Processes and Behavior [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Social Interaction [9]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Social Thinking [2]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Experimental Design and Analysis P/S [18]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Social Structure and Institutions [7]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp Demographics and Social Stratification [7]' },
+        { cat: 'BOOTCAMP_QBANK', title: 'Bootcamp CARS (9 passages/day)' },
+        { cat: 'BOOTCAMP_QBANK', title: 'JW CARS' },
+
+        // --- JACK SPARROW FLASH CARDS ---
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Biology Ch. 1–12 Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Biochemistry Ch. 1–12 Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: General Chemistry Ch. 1–12 Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Organic Chemistry Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Physics Ch. 1–10 Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Psych/Soc Ch. 1–12 Deck' },
+        { cat: 'JACK_SPARROW', title: 'Jack Sparrow Flash Cards: Missed QBank & FL Incorrects' }
+      ];
+
+      // 24 hours starting from 4 AM and ending with 3 AM
+      const PLANNER_HOURS = [
+        { hourIndex: 0, hour24: 4, label: '4 AM' },
+        { hourIndex: 1, hour24: 5, label: '5 AM' },
+        { hourIndex: 2, hour24: 6, label: '6 AM' },
+        { hourIndex: 3, hour24: 7, label: '7 AM' },
+        { hourIndex: 4, hour24: 8, label: '8 AM' },
+        { hourIndex: 5, hour24: 9, label: '9 AM' },
+        { hourIndex: 6, hour24: 10, label: '10 AM' },
+        { hourIndex: 7, hour24: 11, label: '11 AM' },
+        { hourIndex: 8, hour24: 12, label: '12 PM' },
+        { hourIndex: 9, hour24: 13, label: '1 PM' },
+        { hourIndex: 10, hour24: 14, label: '2 PM' },
+        { hourIndex: 11, hour24: 15, label: '3 PM' },
+        { hourIndex: 12, hour24: 16, label: '4 PM' },
+        { hourIndex: 13, hour24: 17, label: '5 PM' },
+        { hourIndex: 14, hour24: 18, label: '6 PM' },
+        { hourIndex: 15, hour24: 19, label: '7 PM' },
+        { hourIndex: 16, hour24: 20, label: '8 PM' },
+        { hourIndex: 17, hour24: 21, label: '9 PM' },
+        { hourIndex: 18, hour24: 22, label: '10 PM' },
+        { hourIndex: 19, hour24: 23, label: '11 PM' },
+        { hourIndex: 20, hour24: 0, label: '12 AM' },
+        { hourIndex: 21, hour24: 1, label: '1 AM' },
+        { hourIndex: 22, hour24: 2, label: '2 AM' },
+        { hourIndex: 23, hour24: 3, label: '3 AM' }
+      ];
+
+      // Color Swatches for 10-Minute Task Shading (including Grey for Sleep!)
+      const COLOR_PALETTE = [
+        { name: 'Indigo (Study)', hex: '#6366f1', isSleep: false },
+        { name: 'Emerald (Bio/Biochem)', hex: '#10b981', isSleep: false },
+        { name: 'Amber (CARS)', hex: '#f59e0b', isSleep: false },
+        { name: 'Rose (Chem/Phys)', hex: '#f43f5e', isSleep: false },
+        { name: 'Sky (Psych/Soc)', hex: '#0ea5e9', isSleep: false },
+        { name: 'Violet (QBank)', hex: '#8b5cf6', isSleep: false },
+        { name: 'Teal (Anki/Cards)', hex: '#14b8a6', isSleep: false },
+        { name: 'Orange (Full-Length)', hex: '#f97316', isSleep: false },
+        { name: 'Pink (Review)', hex: '#ec4899', isSleep: false },
+        { name: 'Sleep (Grey 7h Goal)', hex: SLEEP_COLOR_HEX, isSleep: true }
+      ];
+
+      const MONTHS_META = [
+        { key: '2026-10', year: 2026, month: 9, label: 'October 2026', subtitle: 'Countdown Launch Week (Oct 26 – Oct 31 • Oct 27 Unshaded)' },
+        { key: '2026-11', year: 2026, month: 10, label: 'November 2026', subtitle: 'Rotating Shaded Schedule & Foundation Phase' },
+        { key: '2026-12', year: 2026, month: 11, label: 'December 2026', subtitle: 'Shaded: Dec 2, Dec 7–8, Dec 22–25, Dec 31 • Winter Study Phase' },
+        { key: '2027-01', year: 2027, month: 0, label: 'January 2027', subtitle: 'Shaded: Jan 1, Jan 8–10 • Practice & Q-Bank Phase' },
+        { key: '2027-02', year: 2027, month: 1, label: 'February 2027', subtitle: 'Shaded: Feb 5–7 • Full-Length Simulation Month' },
+        { key: '2027-03', year: 2027, month: 2, label: 'March 2027', subtitle: 'Final Taper & MCAT Test Date (Mar 19 • D-Day)' }
+      ];
+
+      const DOW_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      function parseISO(dateStr) {
+        const [y, m, d] = dateStr.split('-').map(Number);
+        return new Date(Date.UTC(y, m - 1, d));
+      }
+
+      function formatISO(dateObj) {
+        const y = dateObj.getUTCFullYear();
+        const m = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getUTCDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+
+      function diffDaysUTC(dateStrA, dateStrB) {
+        const a = parseISO(dateStrA).getTime();
+        const b = parseISO(dateStrB).getTime();
+        return Math.round((a - b) / (1000 * 60 * 60 * 24));
+      }
+
+      function getMondayBasedDow(dateStr) {
+        const jsDay = parseISO(dateStr).getUTCDay();
+        return (jsDay + 6) % 7;
+      }
+
+      function formatLongDate(dateStr) {
+        const dt = parseISO(dateStr);
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${days[dt.getUTCDay()]}, ${months[dt.getUTCMonth()]} ${dt.getUTCDate()}, ${dt.getUTCFullYear()}`;
+      }
+
+      function isDefaultShaded(dateStr) {
+        if (EXPLICIT_UNSHADED_DATES.has(dateStr)) return false;
+        if (EXTRA_SHADED_DATES.has(dateStr)) return true;
+        if (dateStr >= SHADE_START_STR && dateStr <= SHADE_END_STR) {
+          const offset = diffDaysUTC(dateStr, SHADE_START_STR);
+          const mod = ((offset % 14) + 14) % 14;
+          return [0, 1, 2, 5, 6, 10, 11].includes(mod);
+        }
+        return false;
+      }
+
+      function getDdayLabel(dateStr) {
+        const remaining = diffDaysUTC(END_DATE_STR, dateStr);
+        if (remaining === 0) return 'D-Day';
+        if (remaining > 0) return `D-${remaining}`;
+        return `D+${Math.abs(remaining)}`;
+      }
+
+      function formatMinutesToHrMin(totalMinutes) {
+        const hrs = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        return `${hrs}h ${String(mins).padStart(2, '0')}m`;
+      }
+
+      function slotIndexToTimeLabel(slotIdx) {
+        const hourRow = Math.floor(slotIdx / 6);
+        const minPart = (slotIdx % 6) * 10;
+        if (hourRow < 0 || hourRow >= 24) return '4:00 AM';
+        const hMeta = PLANNER_HOURS[hourRow];
+        const parts = hMeta.label.split(' ');
+        return `${parts[0]}:${String(minPart).padStart(2, '0')} ${parts[1]}`;
+      }
+
+      function slotRangeToLabel(startSlot, endSlot) {
+        const s = Math.min(startSlot, endSlot);
+        const e = Math.max(startSlot, endSlot);
+        const startStr = slotIndexToTimeLabel(s);
+        const endHourRow = Math.floor(e / 6);
+        const endMinPart = ((e % 6) + 1) * 10;
+        let endStr = '';
+        if (endMinPart === 60) {
+          const nextRow = (endHourRow + 1) % 24;
+          const parts = PLANNER_HOURS[nextRow].label.split(' ');
+          endStr = `${parts[0]}:00 ${parts[1]}`;
+        } else {
+          const parts = PLANNER_HOURS[endHourRow].label.split(' ');
+          endStr = `${parts[0]}:${String(endMinPart).padStart(2, '0')} ${parts[1]}`;
+        }
+        const mins = (e - s + 1) * 10;
+        return `${startStr} – ${endStr} (${formatMinutesToHrMin(mins)})`;
+      }
+
+      function createDefaultDaySlots() {
+        const map = {};
+        for (let s = DEFAULT_SLEEP_START_SLOT; s <= DEFAULT_SLEEP_END_SLOT; s++) {
+          map[s] = {
+            task: 'Sleep (7h Goal)',
+            color: SLEEP_COLOR_HEX,
+            isSleep: true
+          };
+        }
+        return map;
+      }
+
+      function isSleepSlotEntry(entry) {
+        if (!entry) return false;
+        if (entry.isSleep) return true;
+        const c = (entry.color || '').toLowerCase();
+        const t = (entry.task || '').toLowerCase();
+        return c === SLEEP_COLOR_HEX || t === 'sleep' || t.startsWith('sleep (');
+      }
+
+      // Build list of all calendar dates [2026-10-26 .. 2027-03-19]
+      const ALL_DATES = [];
+      (function populateAllDates() {
+        let curr = parseISO(CALENDAR_FIRST_MONDAY_STR);
+        const end = parseISO(END_DATE_STR);
+        while (curr <= end) {
+          ALL_DATES.push(formatISO(curr));
+          curr = new Date(curr.getTime() + 86400000);
+        }
+      })();
+
+      // Application State
+      let state = {
+        selectedDate: START_DATE_STR,
+        activeMonth: 'ALL',
+        inspectorTab: 'BOTH',
+        catalogCategory: 'ALL',
+        catalogSearch: '',
+        filterHasTasks: false,
+        filterShadedOnly: false,
+        selectedColor: COLOR_PALETTE[0].hex,
+        toolMode: 'PAINT',
+        todosByDate: {},       // { 'YYYY-MM-DD': [ { id, text, done, corrNum, corrDen, compNum, compDen, statsOpen } ] }
+        notesByDate: {},       // { 'YYYY-MM-DD': 'string' }
+        shadedOverrides: {},   // { 'YYYY-MM-DD': boolean }
+        plannerByDate: {},     // { 'YYYY-MM-DD': { [slotIdx 0..143]: { task, color, isSleep } } }
+        completedCatalogTitles: {} // { [title]: boolean }
+      };
+
+      let dragState = {
+        isDragging: false,
+        startSlot: null,
+        currentSlot: null,
+        selectedRange: null
+      };
+
+      function ensureDefaultSleepForAllDates() {
+        ALL_DATES.forEach((d) => {
+          if (!state.plannerByDate[d]) {
+            state.plannerByDate[d] = createDefaultDaySlots();
+          } else {
+            const map = state.plannerByDate[d];
+            if (!map._sleepInitialized) {
+              for (let s = DEFAULT_SLEEP_START_SLOT; s <= DEFAULT_SLEEP_END_SLOT; s++) {
+                if (!map[s]) {
+                  map[s] = {
+                    task: 'Sleep (7h Goal)',
+                    color: SLEEP_COLOR_HEX,
+                    isSleep: true
+                  };
+                }
+              }
+              Object.defineProperty(map, '_sleepInitialized', { value: true, enumerable: false, configurable: true });
+            }
+          }
+        });
+      }
+
+      function loadState() {
+        try {
+          let raw = localStorage.getItem(STORAGE_KEY);
+          let fromLegacy = false;
+          if (!raw) {
+            for (const lk of LEGACY_KEYS) {
+              const cand = localStorage.getItem(lk);
+              if (cand) {
+                raw = cand;
+                fromLegacy = true;
+                break;
+              }
+            }
+          }
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object') {
+              state.todosByDate = parsed.todosByDate || {};
+              state.notesByDate = parsed.notesByDate || {};
+              state.shadedOverrides = parsed.shadedOverrides || {};
+              state.plannerByDate = parsed.plannerByDate || {};
+              state.completedCatalogTitles = parsed.completedCatalogTitles || {};
+            }
+          }
+          if (fromLegacy) {
+            delete state.shadedOverrides['2026-10-27'];
+            EXTRA_SHADED_DATES.forEach((d) => {
+              delete state.shadedOverrides[d];
+            });
+          }
+        } catch (err) {
+          // Ignore storage errors
+        }
+        ensureDefaultSleepForAllDates();
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+              todosByDate: state.todosByDate,
+              notesByDate: state.notesByDate,
+              shadedOverrides: state.shadedOverrides,
+              plannerByDate: state.plannerByDate,
+              completedCatalogTitles: state.completedCatalogTitles
+            })
+          );
+        } catch (err) {
+          // Ignore storage errors
+        }
+      }
+
+      function isDayShaded(dateStr) {
+        if (Object.prototype.hasOwnProperty.call(state.shadedOverrides, dateStr)) {
+          return Boolean(state.shadedOverrides[dateStr]);
+        }
+        return isDefaultShaded(dateStr);
+      }
+
+      // Daily Study Goal in minutes: Unshaded = 12 hours (720 mins), Shaded = 6 hours (360 mins)
+      function getDayStudyGoalMinutes(dateStr) {
+        if (dateStr < CALENDAR_FIRST_MONDAY_STR || dateStr > END_DATE_STR) return 0;
+        return isDayShaded(dateStr) ? 360 : 720;
+      }
+
+      function getDayTodos(dateStr) {
+        return state.todosByDate[dateStr] || [];
+      }
+
+      function getDaySlotsMap(dateStr) {
+        if (!state.plannerByDate[dateStr]) {
+          state.plannerByDate[dateStr] = createDefaultDaySlots();
+        }
+        return state.plannerByDate[dateStr];
+      }
+
+      // Compute recorded ACTUAL STUDY minutes (excluding Grey Sleep slots)
+      function getDayRecordedMinutes(dateStr) {
+        const slotsMap = getDaySlotsMap(dateStr);
+        let studySlots = 0;
+        Object.keys(slotsMap).forEach((k) => {
+          const entry = slotsMap[k];
+          if (entry && !isSleepSlotEntry(entry)) {
+            studySlots++;
+          }
+        });
+        return studySlots * 10;
+      }
+
+      // Compute recorded SLEEP minutes for the day
+      function getDaySleepMinutes(dateStr) {
+        const slotsMap = getDaySlotsMap(dateStr);
+        let sleepSlots = 0;
+        Object.keys(slotsMap).forEach((k) => {
+          const entry = slotsMap[k];
+          if (entry && isSleepSlotEntry(entry)) {
+            sleepSlots++;
+          }
+        });
+        return sleepSlots * 10;
+      }
+
+      function isCatalogTitleCompleted(title) {
+        if (state.completedCatalogTitles[title]) return true;
+        for (const d of ALL_DATES) {
+          const list = state.todosByDate[d] || [];
+          if (list.some((t) => t.text === title && t.done)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function showToast(msg) {
+        const el = document.getElementById('toastBanner');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.remove('hidden');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => {
+          el.classList.add('hidden');
+        }, 1800);
+      }
+
+      function updateGlobalStats() {
+        let totalTasks = 0;
+        let completedTasks = 0;
+        let shadedCount = 0;
+        let globalStudyMinutes = 0;
+        let globalProjectedMinutes = 0;
+
+        ALL_DATES.forEach((d) => {
+          const list = getDayTodos(d);
+          totalTasks += list.length;
+          completedTasks += list.filter((t) => t.done).length;
+          if (d >= START_DATE_STR && d <= END_DATE_STR) {
+            if (isDayShaded(d)) shadedCount++;
+            globalProjectedMinutes += getDayStudyGoalMinutes(d);
+          }
+          globalStudyMinutes += getDayRecordedMinutes(d);
+        });
+
+        const pct = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        document.getElementById('globalTaskStats').textContent = `${completedTasks} / ${totalTasks} (${pct}%)`;
+        document.getElementById('globalShadeStats').textContent = `${shadedCount} days`;
+        const projHrs = Math.round(globalProjectedMinutes / 60);
+        document.getElementById('globalTotalTimeStats').textContent = `${formatMinutesToHrMin(globalStudyMinutes)} / ${projHrs}h`;
+      }
+
+      function renderColorPalette() {
+        const container = document.getElementById('colorPaletteContainer');
+        const customLabel = container.querySelector('label');
+        container.innerHTML = '';
+
+        COLOR_PALETTE.forEach((swatch) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.title = swatch.name;
+          const isSelected = state.selectedColor.toLowerCase() === swatch.hex.toLowerCase() && state.toolMode === 'PAINT';
+          if (swatch.isSleep) {
+            btn.className = `px-2 py-0.5 rounded-full text-[10px] font-bold text-white border-2 transition flex items-center gap-1 ${
+              isSelected ? 'scale-105 border-slate-900 ring-2 ring-slate-400' : 'border-white shadow-sm hover:opacity-90'
+            }`;
+            btn.style.backgroundColor = swatch.hex;
+            btn.textContent = 'Sleep (Grey)';
+          } else {
+            btn.className = `w-6 h-6 rounded-full border-2 transition transform ${
+              isSelected ? 'scale-110 border-slate-900 ring-2 ring-indigo-400' : 'border-white shadow-sm hover:scale-105'
+            }`;
+            btn.style.backgroundColor = swatch.hex;
+          }
+          btn.addEventListener('click', () => {
+            state.selectedColor = swatch.hex;
+            state.toolMode = 'PAINT';
+            if (swatch.isSleep) {
+              document.getElementById('plannerTaskInput').value = 'Sleep (7h Goal)';
+            } else if (document.getElementById('plannerTaskInput').value === 'Sleep (7h Goal)') {
+              document.getElementById('plannerTaskInput').value = '';
+            }
+            updateToolModeButtons();
+            renderColorPalette();
+          });
+          container.appendChild(btn);
+        });
+
+        if (customLabel) {
+          container.appendChild(customLabel);
+        }
+      }
+
+      function updateToolModeButtons() {
+        const paintBtn = document.getElementById('btnPaintMode');
+        const eraseBtn = document.getElementById('btnEraseMode');
+        if (state.toolMode === 'PAINT') {
+          paintBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition';
+          eraseBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition';
+        } else {
+          paintBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition';
+          eraseBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white shadow-sm transition';
+        }
+      }
+
+      // Render Master Curriculum & QBank Selector
+      function renderCatalogSelector() {
+        const selectEl = document.getElementById('catalogTaskSelect');
+        const browserEl = document.getElementById('catalogBrowserList');
+        const countEl = document.getElementById('catalogFilteredCount');
+        const completedBadge = document.getElementById('catalogCompletedBadge');
+
+        const query = state.catalogSearch.trim().toLowerCase();
+        const cat = state.catalogCategory;
+
+        let totalDoneInCatalog = 0;
+        MASTER_TASK_CATALOG.forEach((item) => {
+          if (isCatalogTitleCompleted(item.title)) totalDoneInCatalog++;
+        });
+        completedBadge.textContent = `${totalDoneInCatalog} / ${MASTER_TASK_CATALOG.length} Completed`;
+
+        const filtered = MASTER_TASK_CATALOG.filter((item) => {
+          if (cat !== 'ALL' && item.cat !== cat) return false;
+          if (query && !item.title.toLowerCase().includes(query)) return false;
+          return true;
+        });
+
+        countEl.textContent = String(filtered.length);
+        selectEl.innerHTML = '';
+        browserEl.innerHTML = '';
+
+        if (filtered.length === 0) {
+          const opt = document.createElement('option');
+          opt.value = '';
+          opt.textContent = 'No matching tasks found...';
+          selectEl.appendChild(opt);
+          browserEl.innerHTML = `<div class="text-xs text-slate-400 p-2 text-center">No matching tasks found.</div>`;
+          return;
+        }
+
+        filtered.forEach((item) => {
+          const done = isCatalogTitleCompleted(item.title);
+          const opt = document.createElement('option');
+          opt.value = item.title;
+          opt.textContent = done ? `✓ [COMPLETED] ${item.title}` : item.title;
+          if (done) {
+            opt.style.textDecoration = 'line-through';
+            opt.style.color = '#94a3b8';
+          }
+          selectEl.appendChild(opt);
+
+          // Browser row with cross-out checkbox and quick "+ Day" button
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between gap-2 py-1 px-1.5 hover:bg-slate-50 rounded text-xs';
+
+          const left = document.createElement('label');
+          left.className = 'flex items-center gap-2 flex-1 cursor-pointer truncate';
+
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = done;
+          cb.className = 'rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5 shrink-0';
+          cb.addEventListener('change', () => {
+            state.completedCatalogTitles[item.title] = cb.checked;
+            saveState();
+            renderCatalogSelector();
+            renderInspector();
+            renderCalendar();
+          });
+
+          const textSpan = document.createElement('span');
+          textSpan.className = done ? 'line-through text-slate-400 truncate' : 'text-slate-700 font-medium truncate';
+          textSpan.textContent = item.title;
+          textSpan.title = item.title;
+
+          left.appendChild(cb);
+          left.appendChild(textSpan);
+
+          const addBtn = document.createElement('button');
+          addBtn.type = 'button';
+          addBtn.className = 'px-2 py-0.5 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[10px] shrink-0 transition';
+          addBtn.textContent = '+ Add to Day';
+          addBtn.addEventListener('click', () => {
+            addTodoItem(state.selectedDate, item.title);
+          });
+
+          row.appendChild(left);
+          row.appendChild(addBtn);
+          browserEl.appendChild(row);
+        });
+      }
+
+      function renderCalendar() {
+        const wrapper = document.getElementById('calendarMonthsWrapper');
+        wrapper.innerHTML = '';
+
+        const monthsToShow = state.activeMonth === 'ALL'
+          ? MONTHS_META
+          : MONTHS_META.filter((m) => m.key === state.activeMonth);
+
+        monthsToShow.forEach((mMeta) => {
+          const daysInMonth = new Date(Date.UTC(mMeta.year, mMeta.month + 1, 0)).getUTCDate();
+
+          const activeDatesInMonth = [];
+          for (let d = 1; d <= daysInMonth; d++) {
+            const iso = formatISO(new Date(Date.UTC(mMeta.year, mMeta.month, d)));
+            if (iso >= CALENDAR_FIRST_MONDAY_STR && iso <= END_DATE_STR) {
+              activeDatesInMonth.push(iso);
+            }
+          }
+
+          const matchingDates = activeDatesInMonth.filter((iso) => {
+            if (state.filterHasTasks && getDayTodos(iso).length === 0 && getDayRecordedMinutes(iso) === 0) return false;
+            if (state.filterShadedOnly && !isDayShaded(iso)) return false;
+            return true;
+          });
+
+          const section = document.createElement('section');
+          section.className = 'bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden';
+
+          const shadedInMonth = activeDatesInMonth.filter((iso) => isDayShaded(iso)).length;
+          const tasksInMonth = activeDatesInMonth.reduce((acc, iso) => acc + getDayTodos(iso).length, 0);
+          const monthActualMinutes = activeDatesInMonth.reduce((acc, iso) => acc + getDayRecordedMinutes(iso), 0);
+          const monthProjectedMinutes = activeDatesInMonth.reduce((acc, iso) => acc + getDayStudyGoalMinutes(iso), 0);
+
+          const header = document.createElement('div');
+          header.className = 'bg-slate-50 border-b border-slate-200 px-5 py-3.5 flex flex-wrap items-center justify-between gap-2';
+          header.innerHTML = `
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">${mMeta.label}</h2>
+              <p class="text-xs text-slate-500">${mMeta.subtitle}</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs flex-wrap">
+              <span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold">Projected: ${formatMinutesToHrMin(monthProjectedMinutes)}</span>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">Actual Studied: ${formatMinutesToHrMin(monthActualMinutes)}</span>
+              <span class="px-2.5 py-1 rounded-full bg-slate-200/80 text-slate-700 font-semibold">${shadedInMonth} shaded</span>
+              <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">${tasksInMonth} to-dos</span>
+            </div>
+          `;
+          section.appendChild(header);
+
+          // 8-Column Header Row: Mon, Tue, Wed, Thu, Fri, Sat, Sun + Right Column: Weekly Study Time (Projected vs. Actual)
+          const dowRow = document.createElement('div');
+          dowRow.className = 'grid grid-cols-8 border-b border-slate-200 bg-slate-100/70 text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-600';
+          DOW_LABELS.forEach((dow, idx) => {
+            const cell = document.createElement('div');
+            cell.className = 'py-2 px-1 ' + (idx >= 5 ? 'text-slate-800 bg-slate-200/40' : '');
+            cell.textContent = dow;
+            dowRow.appendChild(cell);
+          });
+          const summaryHeaderCell = document.createElement('div');
+          summaryHeaderCell.className = 'py-2 px-1 bg-indigo-900 text-white font-extrabold text-[10px] leading-tight flex items-center justify-center';
+          summaryHeaderCell.textContent = 'Weekly Study Time';
+          dowRow.appendChild(summaryHeaderCell);
+          section.appendChild(dowRow);
+
+          let startDayNum = 1;
+          if (mMeta.key === '2026-10') {
+            startDayNum = 26;
+          }
+          let endDayNum = daysInMonth;
+          if (mMeta.key === '2027-03') {
+            endDayNum = 21;
+          }
+
+          const firstRenderDate = formatISO(new Date(Date.UTC(mMeta.year, mMeta.month, startDayNum)));
+          const leadingBlanks = getMondayBasedDow(firstRenderDate);
+
+          const monthCells = [];
+          for (let b = 0; b < leadingBlanks; b++) {
+            monthCells.push(null);
+          }
+          for (let d = startDayNum; d <= endDayNum; d++) {
+            monthCells.push(d);
+          }
+          const trailingBlanks = (7 - (monthCells.length % 7)) % 7;
+          for (let t = 0; t < trailingBlanks; t++) {
+            monthCells.push(null);
+          }
+
+          const grid = document.createElement('div');
+          grid.className = 'grid grid-cols-8 divide-x divide-y divide-slate-200 border-b border-slate-200';
+
+          // Process week by week (7 days + 1 weekly summary cell on the right of Sunday)
+          for (let w = 0; w < monthCells.length; w += 7) {
+            const weekSlice = monthCells.slice(w, w + 7);
+            let weekProjectedMins = 0;
+            let weekActualMins = 0;
+            let weekActiveDays = 0;
+
+            weekSlice.forEach((d) => {
+              if (d === null) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'min-h-[124px] sm:min-h-[136px] bg-slate-50/40 p-2';
+                grid.appendChild(emptyCell);
+                return;
+              }
+
+              const iso = formatISO(new Date(Date.UTC(mMeta.year, mMeta.month, d)));
+              const inRange = iso >= CALENDAR_FIRST_MONDAY_STR && iso <= END_DATE_STR;
+
+              if (!inRange) {
+                const outCell = document.createElement('div');
+                outCell.className = 'min-h-[124px] sm:min-h-[136px] bg-white p-2 text-slate-300 select-none flex flex-col justify-between';
+                outCell.innerHTML = `
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-medium">${d}</span>
+                    <span class="text-[10px] text-slate-300">Post-MCAT</span>
+                  </div>
+                `;
+                grid.appendChild(outCell);
+                return;
+              }
+
+              const shaded = isDayShaded(iso);
+              const dayGoalMins = getDayStudyGoalMinutes(iso);
+              const recordedMins = getDayRecordedMinutes(iso);
+              weekProjectedMins += dayGoalMins;
+              weekActualMins += recordedMins;
+              weekActiveDays++;
+
+              const todos = getDayTodos(iso);
+              const completedCount = todos.filter((t) => t.done).length;
+              const slotsMap = getDaySlotsMap(iso);
+              const isSelected = state.selectedDate === iso;
+              const isToday = iso === START_DATE_STR;
+              const isDday = iso === END_DATE_STR;
+              const isPreStart = iso < START_DATE_STR;
+              const ddayText = getDdayLabel(iso);
+              const noteText = (state.notesByDate[iso] || '').trim();
+
+              const passesFilter = matchingDates.includes(iso);
+
+              const cell = document.createElement('div');
+              cell.dataset.date = iso;
+              cell.setAttribute('role', 'button');
+              cell.tabIndex = 0;
+
+              let bgClass = 'bg-white hover:bg-indigo-50/40';
+              if (shaded) {
+                bgClass = 'shaded-cell';
+              }
+              if (isToday) {
+                bgClass = shaded ? 'shaded-cell ring-2 ring-inset ring-amber-500' : 'bg-amber-50/70 hover:bg-amber-100/60';
+              }
+              if (isDday) {
+                bgClass = 'bg-emerald-50 hover:bg-emerald-100/70';
+              }
+
+              const selectedRing = isSelected
+                ? 'ring-2 ring-inset ring-indigo-600 z-10'
+                : '';
+
+              const filterOpacity = passesFilter ? 'opacity-100' : 'opacity-25';
+
+              cell.className = `min-h-[124px] sm:min-h-[136px] p-1.5 sm:p-2 text-left transition flex flex-col justify-between relative group cursor-pointer focus:outline-none ${bgClass} ${selectedRing} ${filterOpacity}`;
+
+              let ddayBadgeClass = 'bg-slate-100 text-slate-700 border border-slate-200';
+              if (shaded) {
+                ddayBadgeClass = 'bg-slate-800 text-white';
+              }
+              if (isToday) {
+                ddayBadgeClass = 'bg-amber-500 text-slate-950 font-extrabold';
+              }
+              if (isDday) {
+                ddayBadgeClass = 'bg-emerald-600 text-white font-extrabold animate-pulse';
+              }
+
+              // Collect unique non-sleep planner tasks to preview on the calendar cell
+              const plannerTaskPreview = [];
+              const seenPlannerLabels = new Set();
+              Object.keys(slotsMap).sort((a, b) => Number(a) - Number(b)).forEach((k) => {
+                const entry = slotsMap[k];
+                if (entry && entry.task && !isSleepSlotEntry(entry) && !seenPlannerLabels.has(entry.task)) {
+                  seenPlannerLabels.add(entry.task);
+                  plannerTaskPreview.push(entry);
+                }
+              });
+
+              let itemsPreviewHtml = '';
+              if (plannerTaskPreview.length > 0 || todos.length > 0) {
+                const combined = [];
+                plannerTaskPreview.slice(0, 2).forEach((pt) => {
+                  combined.push(`
+                    <div class="truncate text-[10px] leading-tight px-1.5 py-0.5 rounded font-semibold text-white shadow-sm" style="background-color: ${escapeHtml(pt.color || '#6366f1')}">
+                      ${escapeHtml(pt.task)}
+                    </div>
+                  `);
+                });
+                todos.slice(0, Math.max(0, 2 - combined.length)).forEach((t) => {
+                  const hasStats = (t.corrDen > 0) || (t.compDen > 0);
+                  const statBadge = hasStats
+                    ? ` (${t.corrDen > 0 ? Math.round((t.corrNum / t.corrDen) * 100) + '% corr' : ''}${t.corrDen > 0 && t.compDen > 0 ? ', ' : ''}${t.compDen > 0 ? Math.round((t.compNum / t.compDen) * 100) + '% done' : ''})`
+                    : '';
+                  combined.push(`
+                    <div class="truncate text-[10px] leading-tight px-1.5 py-0.5 rounded ${
+                      t.done
+                        ? 'bg-emerald-100/80 text-emerald-800 line-through'
+                        : 'bg-indigo-50/90 text-indigo-900 font-medium border border-indigo-200/60'
+                    }">
+                      ${escapeHtml(t.text)}${escapeHtml(statBadge)}
+                    </div>
+                  `);
+                });
+                const totalItemsCount = plannerTaskPreview.length + todos.length;
+                const moreHtml = totalItemsCount > 2
+                  ? `<div class="text-[9px] font-semibold text-indigo-600 pl-0.5">+${totalItemsCount - 2} more</div>`
+                  : '';
+                itemsPreviewHtml = `<div class="space-y-1 mt-1 w-full">${combined.join('')}${moreHtml}</div>`;
+              } else if (noteText) {
+                itemsPreviewHtml = `<div class="mt-1 text-[10px] text-slate-500 italic truncate px-0.5">${escapeHtml(noteText)}</div>`;
+              } else {
+                itemsPreviewHtml = `<div class="mt-1.5 text-[9px] text-slate-400">Goal: ${shaded ? '6h' : '12h'} study + 7h sleep</div>`;
+              }
+
+              const totalTimeStr = formatMinutesToHrMin(recordedMins);
+              const totalTimeBadgeClass = recordedMins > 0
+                ? 'bg-indigo-600 text-white font-bold shadow-sm'
+                : 'bg-slate-100/90 text-slate-600 font-semibold border border-slate-200/80';
+
+              const taskCounterBadge = todos.length > 0
+                ? `<span class="text-[9px] font-bold px-1.5 py-0.2 rounded-full ${
+                    completedCount === todos.length
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : 'bg-indigo-100 text-indigo-800'
+                  }">${completedCount}/${todos.length}</span>`
+                : '';
+
+              cell.innerHTML = `
+                <div class="w-full">
+                  <div class="flex items-center justify-between gap-1">
+                    <span class="date-num-badge inline-flex items-center justify-center min-w-[22px] h-5 sm:h-6 px-1.5 rounded-lg text-xs font-extrabold transition ${
+                      isSelected
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : isDday
+                        ? 'bg-emerald-200/70 text-emerald-900 hover:bg-emerald-300'
+                        : isToday
+                        ? 'bg-amber-300/80 text-amber-950 hover:bg-amber-400'
+                        : 'bg-slate-100/80 text-slate-900 group-hover:bg-indigo-600 group-hover:text-white'
+                    }" title="Click to open 24-Hour Daily Planner for ${iso}">
+                      ${d}
+                    </span>
+                    <span class="text-[9px] sm:text-[10px] font-bold px-1 py-0.5 rounded ${ddayBadgeClass}">
+                      ${isPreStart ? 'Pre' : ddayText}
+                    </span>
+                  </div>
+                  ${itemsPreviewHtml}
+                </div>
+                <div class="w-full pt-1 mt-1 border-t border-slate-200/60 flex flex-col gap-0.5">
+                  <div class="flex items-center justify-between gap-1">
+                    <span class="text-[9px] sm:text-[10px] px-1 py-0.5 rounded w-full text-center truncate ${totalTimeBadgeClass}">
+                      Total Time: ${totalTimeStr}
+                    </span>
+                  </div>
+                  <div class="flex items-center justify-between text-[9px] text-slate-500 px-0.5">
+                    <span>${isToday ? 'Today (12h)' : isDday ? 'MCAT' : shaded ? 'Shaded (6h)' : 'Goal: 12h'}</span>
+                    ${taskCounterBadge}
+                  </div>
+                </div>
+              `;
+
+              cell.addEventListener('click', () => {
+                selectDate(iso, true);
+              });
+              cell.addEventListener('keydown', (ev) => {
+                if (ev.key === 'Enter' || ev.key === ' ') {
+                  ev.preventDefault();
+                  selectDate(iso, true);
+                }
+              });
+
+              grid.appendChild(cell);
+            });
+
+            // 8th Column on the right of Sunday: Total Projected Study Time & Actual Studied Time for the week
+            const summaryCell = document.createElement('div');
+            const weekPct = weekProjectedMins > 0 ? Math.min(100, Math.round((weekActualMins / weekProjectedMins) * 100)) : 0;
+            summaryCell.className = 'min-h-[124px] sm:min-h-[136px] p-2 bg-slate-900/[0.03] flex flex-col justify-between border-l-2 border-indigo-200';
+            summaryCell.innerHTML = `
+              <div class="space-y-1.5">
+                <div class="text-[9px] font-extrabold uppercase tracking-wider text-indigo-900 bg-indigo-100/80 px-1.5 py-0.5 rounded text-center">
+                  Week Summary (${weekActiveDays}d)
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg p-1.5 shadow-sm">
+                  <div class="text-[9px] uppercase font-bold text-slate-400">Projected Study</div>
+                  <div class="text-xs sm:text-sm font-extrabold text-slate-800">${formatMinutesToHrMin(weekProjectedMins)}</div>
+                </div>
+                <div class="bg-white border border-emerald-200 rounded-lg p-1.5 shadow-sm">
+                  <div class="text-[9px] uppercase font-bold text-emerald-600">Actual Studied</div>
+                  <div class="text-xs sm:text-sm font-extrabold text-emerald-700">${formatMinutesToHrMin(weekActualMins)}</div>
+                </div>
+              </div>
+              <div class="pt-1">
+                <div class="flex items-center justify-between text-[9px] font-bold text-slate-600 mb-0.5">
+                  <span>Progress</span>
+                  <span>${weekPct}%</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 transition-all" style="width: ${weekPct}%"></div>
+                </div>
+              </div>
+            `;
+            grid.appendChild(summaryCell);
+          }
+
+          section.appendChild(grid);
+          wrapper.appendChild(section);
+        });
+      }
+
+      // Render the 24-Hour (4 AM - 3 AM) x 6 (10-Minute) Daily Planner Grid
+      function renderDailyPlannerGrid() {
+        const iso = state.selectedDate;
+        const slotsMap = getDaySlotsMap(iso);
+        const rowsContainer = document.getElementById('hourlyGridRows');
+        rowsContainer.innerHTML = '';
+
+        const selStart = dragState.selectedRange ? Math.min(dragState.selectedRange.start, dragState.selectedRange.end) : -1;
+        const selEnd = dragState.selectedRange ? Math.max(dragState.selectedRange.start, dragState.selectedRange.end) : -1;
+
+        const dragStart = dragState.isDragging && dragState.startSlot !== null && dragState.currentSlot !== null
+          ? Math.min(dragState.startSlot, dragState.currentSlot)
+          : -1;
+        const dragEnd = dragState.isDragging && dragState.startSlot !== null && dragState.currentSlot !== null
+          ? Math.max(dragState.startSlot, dragState.currentSlot)
+          : -1;
+
+        PLANNER_HOURS.forEach((hMeta) => {
+          const rowEl = document.createElement('div');
+          rowEl.className = 'grid grid-cols-[58px_1fr] items-stretch min-h-[26px]';
+
+          const isSleepHour = hMeta.hourIndex >= 17;
+          const hourLabelEl = document.createElement('div');
+          hourLabelEl.className = `px-1.5 py-0.5 text-[11px] font-bold border-r border-slate-200 flex items-center justify-center select-none ${
+            isSleepHour ? 'bg-slate-200/80 text-slate-700' : 'bg-slate-50 text-slate-600'
+          }`;
+          hourLabelEl.textContent = hMeta.label;
+          rowEl.appendChild(hourLabelEl);
+
+          const boxesGrid = document.createElement('div');
+          boxesGrid.className = 'grid grid-cols-6 divide-x divide-slate-200';
+
+          for (let mIdx = 0; mIdx < 6; mIdx++) {
+            const slotIdx = hMeta.hourIndex * 6 + mIdx;
+            const slotData = slotsMap[slotIdx];
+            const isDraggingOver = dragStart !== -1 && slotIdx >= dragStart && slotIdx <= dragEnd;
+            const isSelectedSlot = selStart !== -1 && slotIdx >= selStart && slotIdx <= selEnd;
+
+            const box = document.createElement('div');
+            box.dataset.slot = String(slotIdx);
+            box.className = 'time-slot-cell relative h-[26px] flex items-center px-1 cursor-pointer transition-colors overflow-hidden';
+
+            let bgColor = '';
+            let displayLabel = '';
+            let useSleepPattern = false;
+
+            if (isDraggingOver) {
+              bgColor = state.toolMode === 'ERASE' ? '#fecdd3' : state.selectedColor;
+              if (state.toolMode === 'PAINT' && state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX) {
+                useSleepPattern = true;
+              }
+            } else if (slotData) {
+              bgColor = slotData.color || '#6366f1';
+              if (isSleepSlotEntry(slotData)) {
+                useSleepPattern = true;
+              }
+            }
+
+            if (useSleepPattern) {
+              box.classList.add('sleep-slot-pattern');
+            } else if (bgColor) {
+              box.style.backgroundColor = bgColor;
+            } else {
+              box.classList.add('hover:bg-indigo-50/70');
+            }
+
+            if (isSelectedSlot) {
+              box.classList.add('ring-1', 'ring-inset', 'ring-slate-900/60');
+            }
+
+            if (slotData && slotData.task) {
+              const prevSlot = slotsMap[slotIdx - 1];
+              const isStartOfRun = !prevSlot || prevSlot.task !== slotData.task || prevSlot.color !== slotData.color || mIdx === 0;
+              if (isStartOfRun) {
+                displayLabel = slotData.task;
+              }
+            } else if (isDraggingOver && state.toolMode === 'PAINT') {
+              const draftTask = (document.getElementById('plannerTaskInput').value || '').trim();
+              if (slotIdx === dragStart || mIdx === 0) {
+                displayLabel = draftTask || (state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX ? 'Sleep (7h Goal)' : 'Study Block');
+              }
+            }
+
+            if (displayLabel) {
+              const span = document.createElement('span');
+              span.className = 'text-[10px] font-bold text-white drop-shadow-sm truncate leading-none pointer-events-none select-none';
+              span.textContent = displayLabel;
+              box.appendChild(span);
+            }
+
+            box.title = `${slotRangeToLabel(slotIdx, slotIdx)}${slotData && slotData.task ? ' • ' + slotData.task : ''}`;
+
+            box.addEventListener('mousedown', (e) => {
+              e.preventDefault();
+              startSlotDrag(slotIdx);
+            });
+            box.addEventListener('mouseenter', () => {
+              if (dragState.isDragging) {
+                updateSlotDrag(slotIdx);
+              }
+            });
+
+            boxesGrid.appendChild(box);
+          }
+
+          rowEl.appendChild(boxesGrid);
+          rowsContainer.appendChild(rowEl);
+        });
+
+        renderPlannerBreakdown();
+      }
+
+      function startSlotDrag(slotIdx) {
+        dragState.isDragging = true;
+        dragState.startSlot = slotIdx;
+        dragState.currentSlot = slotIdx;
+        document.getElementById('activeSelectionHint').textContent = slotRangeToLabel(slotIdx, slotIdx);
+        renderDailyPlannerGrid();
+      }
+
+      function updateSlotDrag(slotIdx) {
+        if (!dragState.isDragging) return;
+        dragState.currentSlot = slotIdx;
+        document.getElementById('activeSelectionHint').textContent = slotRangeToLabel(dragState.startSlot, slotIdx);
+        renderDailyPlannerGrid();
+      }
+
+      function finishSlotDrag() {
+        if (!dragState.isDragging) return;
+        const s = Math.min(dragState.startSlot, dragState.currentSlot);
+        const e = Math.max(dragState.startSlot, dragState.currentSlot);
+        dragState.isDragging = false;
+        dragState.selectedRange = { start: s, end: e };
+
+        const iso = state.selectedDate;
+        const slotsMap = getDaySlotsMap(iso);
+
+        if (state.toolMode === 'ERASE') {
+          for (let i = s; i <= e; i++) {
+            delete slotsMap[i];
+          }
+          dragState.selectedRange = null;
+          document.getElementById('slotSelectionActionBar').classList.add('hidden');
+          document.getElementById('activeSelectionHint').textContent = '';
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          renderInspector();
+          showToast('Unshaded selected time boxes');
+          return;
+        }
+
+        const taskInput = document.getElementById('plannerTaskInput');
+        let taskName = taskInput.value.trim();
+        const isSleepPaint = state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX;
+
+        if (!taskName && s === e && slotsMap[s]) {
+          taskInput.value = slotsMap[s].task || '';
+          state.selectedColor = slotsMap[s].color || state.selectedColor;
+          renderColorPalette();
+        } else {
+          const appliedLabel = taskName || (isSleepPaint ? 'Sleep (7h Goal)' : 'Study Block');
+          for (let i = s; i <= e; i++) {
+            slotsMap[i] = {
+              task: appliedLabel,
+              color: state.selectedColor,
+              isSleep: isSleepPaint || appliedLabel.toLowerCase().startsWith('sleep')
+            };
+          }
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          showToast(`Shaded ${slotRangeToLabel(s, e)}`);
+        }
+
+        const actionBar = document.getElementById('slotSelectionActionBar');
+        const rangeLabel = document.getElementById('slotSelectionRangeLabel');
+        actionBar.classList.remove('hidden');
+        rangeLabel.textContent = slotRangeToLabel(s, e);
+        document.getElementById('activeSelectionHint').textContent = '';
+
+        renderInspector();
+      }
+
+      function applyTaskToSelectedRange() {
+        if (!dragState.selectedRange) return;
+        const { start, end } = dragState.selectedRange;
+        const s = Math.min(start, end);
+        const e = Math.max(start, end);
+        const iso = state.selectedDate;
+        const slotsMap = getDaySlotsMap(iso);
+        const taskInput = document.getElementById('plannerTaskInput');
+        const isSleepPaint = state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX;
+        const label = taskInput.value.trim() || (isSleepPaint ? 'Sleep (7h Goal)' : 'Study Block');
+
+        for (let i = s; i <= e; i++) {
+          slotsMap[i] = {
+            task: label,
+            color: state.selectedColor,
+            isSleep: isSleepPaint || label.toLowerCase().startsWith('sleep')
+          };
+        }
+
+        saveState();
+        updateGlobalStats();
+        renderCalendar();
+        renderInspector();
+        showToast(`Updated "${label}" (${slotRangeToLabel(s, e)})`);
+      }
+
+      function deleteSelectedRange() {
+        if (!dragState.selectedRange) return;
+        const { start, end } = dragState.selectedRange;
+        const s = Math.min(start, end);
+        const e = Math.max(start, end);
+        const iso = state.selectedDate;
+        const slotsMap = getDaySlotsMap(iso);
+        for (let i = s; i <= e; i++) {
+          delete slotsMap[i];
+        }
+        dragState.selectedRange = null;
+        document.getElementById('slotSelectionActionBar').classList.add('hidden');
+        saveState();
+        updateGlobalStats();
+        renderCalendar();
+        renderInspector();
+        showToast('Unshaded selected time block');
+      }
+
+      function renderPlannerBreakdown() {
+        const iso = state.selectedDate;
+        const slotsMap = getDaySlotsMap(iso);
+        const studyMins = getDayRecordedMinutes(iso);
+        const sleepMins = getDaySleepMinutes(iso);
+        const studyGoalMins = getDayStudyGoalMinutes(iso);
+        const shaded = isDayShaded(iso);
+
+        const studyStr = formatMinutesToHrMin(studyMins);
+        const goalStr = formatMinutesToHrMin(studyGoalMins);
+        const sleepStr = formatMinutesToHrMin(sleepMins);
+
+        document.getElementById('selectedDateTotalTimeBadge').textContent = `Total Time: ${studyStr}`;
+        document.getElementById('plannerSummaryTotal').textContent = `Total Study Time: ${studyStr} (Sleep: ${sleepStr})`;
+
+        const studyPct = studyGoalMins > 0 ? Math.min(100, Math.round((studyMins / studyGoalMins) * 100)) : 0;
+        const sleepPct = Math.min(100, Math.round((sleepMins / 420) * 100));
+
+        document.getElementById('dailyStudyGoalTypeLabel').textContent =
+          shaded ? 'Daily Study Goal (Shaded: 6h)' : 'Daily Study Goal (Unshaded: 12h)';
+        document.getElementById('dailyStudyGoalPct').textContent = `${studyPct}%`;
+        document.getElementById('dailyStudyActualVsGoal').textContent = `${studyStr} / ${goalStr}`;
+        document.getElementById('dailyStudyGoalProgressBar').style.width = `${studyPct}%`;
+
+        document.getElementById('dailySleepActualVsGoal').textContent = `${sleepStr} / 7h 00m`;
+        document.getElementById('dailySleepGoalProgressBar').style.width = `${sleepPct}%`;
+
+        const breakdownEl = document.getElementById('plannerTaskBreakdownList');
+        breakdownEl.innerHTML = '';
+
+        const groups = {};
+        Object.keys(slotsMap).forEach((k) => {
+          const item = slotsMap[k];
+          if (!item) return;
+          const label = item.task || 'Study Block';
+          const color = item.color || '#6366f1';
+          const sleepFlag = isSleepSlotEntry(item);
+          const key = `${label}___${color}`;
+          if (!groups[key]) {
+            groups[key] = { label, color, mins: 0, isSleep: sleepFlag };
+          }
+          groups[key].mins += 10;
+        });
+
+        const groupEntries = Object.values(groups);
+        if (groupEntries.length === 0) {
+          breakdownEl.innerHTML = `<div class="text-slate-400 italic text-[11px]">No blocks shaded today. Click &amp; drag on the 4 AM – 3 AM grid above!</div>`;
+          return;
+        }
+
+        groupEntries.forEach((g) => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80';
+          row.innerHTML = `
+            <div class="flex items-center gap-2 truncate">
+              <span class="w-3 h-3 rounded-full shrink-0" style="background-color: ${escapeHtml(g.color)}"></span>
+              <span class="font-semibold text-slate-800 truncate">${escapeHtml(g.label)}</span>
+              ${g.isSleep ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-slate-200 text-slate-700 font-bold">Sleep Goal</span>' : ''}
+            </div>
+            <span class="font-bold text-slate-700 shrink-0">${formatMinutesToHrMin(g.mins)}</span>
+          `;
+          breakdownEl.appendChild(row);
+        });
+      }
+
+      function parseBracketCount(title) {
+        const m = title.match(/\[(\d+)\]/);
+        return m ? Number(m[1]) : 0;
+      }
+
+      function renderInspector() {
+        const iso = state.selectedDate;
+        const ddayLabel = getDdayLabel(iso);
+        const remaining = diffDaysUTC(END_DATE_STR, iso);
+        const shaded = isDayShaded(iso);
+        const todos = getDayTodos(iso);
+
+        document.getElementById('selectedDateDdayBadge').textContent = ddayLabel;
+        document.getElementById('selectedDateTitle').textContent = formatLongDate(iso);
+
+        let subtitle = `${remaining} day${remaining === 1 ? '' : 's'} remaining until MCAT • Daily Goal: ${shaded ? '6 hrs' : '12 hrs'}`;
+        if (iso === START_DATE_STR) {
+          subtitle = `Start Date (Today) • 141 days until MCAT • Goal: ${shaded ? '6 hrs' : '12 hrs'}`;
+        } else if (iso === END_DATE_STR) {
+          subtitle = `MCAT Test Day! You made it to D-Day!`;
+        }
+        document.getElementById('selectedDateSubtitle').textContent = subtitle;
+
+        const shadedBadge = document.getElementById('selectedDateShadedBadge');
+        if (shaded) {
+          shadedBadge.classList.remove('hidden');
+        } else {
+          shadedBadge.classList.add('hidden');
+        }
+
+        renderDailyPlannerGrid();
+
+        const listEl = document.getElementById('selectedDayTodoList');
+        listEl.innerHTML = '';
+
+        const doneCount = todos.filter((t) => t.done).length;
+        document.getElementById('selectedDayTaskCount').textContent =
+          `${doneCount} of ${todos.length} completed`;
+
+        if (todos.length === 0) {
+          const emptyLi = document.createElement('li');
+          emptyLi.className = 'text-xs text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl p-3.5 text-center';
+          emptyLi.textContent = 'No tasks added for this day yet. Select a Blueprint module, End of Chapter Test, QBank, or Jack Sparrow deck above!';
+          listEl.appendChild(emptyLi);
+        } else {
+          todos.forEach((item) => {
+            const li = document.createElement('li');
+            li.className = `p-2.5 rounded-xl border transition space-y-2 ${
+              item.done
+                ? 'bg-emerald-50/60 border-emerald-200 text-slate-500'
+                : 'bg-white border-slate-200 text-slate-800 shadow-sm'
+            }`;
+
+            const topRow = document.createElement('div');
+            topRow.className = 'flex items-start justify-between gap-2';
+
+            const leftLabel = document.createElement('label');
+            leftLabel.className = 'flex items-start gap-2 flex-1 cursor-pointer text-xs font-semibold break-words';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = Boolean(item.done);
+            checkbox.className = 'rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4 mt-0.5 shrink-0';
+            checkbox.addEventListener('change', () => {
+              toggleTodoDone(iso, item.id);
+            });
+
+            const span = document.createElement('span');
+            span.className = item.done ? 'line-through text-slate-400' : 'text-slate-800';
+            span.textContent = item.text;
+
+            leftLabel.appendChild(checkbox);
+            leftLabel.appendChild(span);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'flex items-center gap-1 shrink-0';
+
+            const statsBtn = document.createElement('button');
+            statsBtn.type = 'button';
+            statsBtn.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded transition';
+            statsBtn.textContent = '% Stats';
+            statsBtn.title = 'Input Percentage Correction (number/number) and Percentage Completion (number/number)';
+            statsBtn.addEventListener('click', () => {
+              item.statsOpen = !item.statsOpen;
+              saveState();
+              renderInspector();
+            });
+
+            const useInPlannerBtn = document.createElement('button');
+            useInPlannerBtn.type = 'button';
+            useInPlannerBtn.className = 'text-[10px] font-semibold text-indigo-600 hover:text-indigo-800 px-1.5 py-0.5 rounded hover:bg-indigo-50 transition';
+            useInPlannerBtn.textContent = 'Use in Grid';
+            useInPlannerBtn.addEventListener('click', () => {
+              const taskInput = document.getElementById('plannerTaskInput');
+              taskInput.value = item.text;
+              state.toolMode = 'PAINT';
+              if (state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX) {
+                state.selectedColor = COLOR_PALETTE[0].hex;
+                renderColorPalette();
+              }
+              updateToolModeButtons();
+              taskInput.focus();
+              showToast(`Brush set to "${item.text}" — drag 10-min boxes!`);
+            });
+
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'text-[10px] text-slate-400 hover:text-rose-600 px-1.5 py-0.5 rounded hover:bg-rose-50 transition';
+            delBtn.textContent = 'Delete';
+            delBtn.addEventListener('click', () => {
+              deleteTodoItem(iso, item.id);
+            });
+
+            btnGroup.appendChild(statsBtn);
+            btnGroup.appendChild(useInPlannerBtn);
+            btnGroup.appendChild(delBtn);
+
+            topRow.appendChild(leftLabel);
+            topRow.appendChild(btnGroup);
+            li.appendChild(topRow);
+
+            const corrNum = Number(item.corrNum) || 0;
+            const corrDen = Number(item.corrDen) || 0;
+            const compNum = Number(item.compNum) || 0;
+            const compDen = Number(item.compDen) || 0;
+
+            if (corrDen > 0 || compDen > 0) {
+              const badgesRow = document.createElement('div');
+              badgesRow.className = 'flex flex-wrap items-center gap-2 pl-6';
+              if (corrDen > 0) {
+                const corrPct = Math.round((corrNum / corrDen) * 100);
+                const b1 = document.createElement('span');
+                b1.className = 'text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200';
+                b1.textContent = `Correction: ${corrNum}/${corrDen} (${corrPct}%)`;
+                badgesRow.appendChild(b1);
+              }
+              if (compDen > 0) {
+                const compPct = Math.round((compNum / compDen) * 100);
+                const b2 = document.createElement('span');
+                b2.className = 'text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200';
+                b2.textContent = `Completion: ${compNum}/${compDen} (${compPct}%)`;
+                badgesRow.appendChild(b2);
+              }
+              li.appendChild(badgesRow);
+            }
+
+            if (item.statsOpen) {
+              const statsBox = document.createElement('div');
+              statsBox.className = 'mt-1.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-2 text-[11px]';
+              statsBox.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div class="bg-white p-2 rounded border border-slate-200">
+                    <div class="font-bold text-slate-700 mb-1">% Correction (Correct / Total)</div>
+                    <div class="flex items-center gap-1">
+                      <input type="number" min="0" placeholder="Correct" value="${item.corrNum !== undefined ? item.corrNum : ''}" class="corr-num-input w-16 rounded border border-slate-300 px-1.5 py-1 text-xs text-center" />
+                      <span class="font-bold text-slate-400">/</span>
+                      <input type="number" min="1" placeholder="Total" value="${item.corrDen !== undefined ? item.corrDen : ''}" class="corr-den-input w-16 rounded border border-slate-300 px-1.5 py-1 text-xs text-center" />
+                      <span class="corr-pct-label ml-auto font-extrabold text-amber-700">${corrDen > 0 ? Math.round((corrNum / corrDen) * 100) + '%' : '—'}</span>
+                    </div>
+                  </div>
+                  <div class="bg-white p-2 rounded border border-slate-200">
+                    <div class="font-bold text-slate-700 mb-1">% Completion (Done / Total)</div>
+                    <div class="flex items-center gap-1">
+                      <input type="number" min="0" placeholder="Done" value="${item.compNum !== undefined ? item.compNum : ''}" class="comp-num-input w-16 rounded border border-slate-300 px-1.5 py-1 text-xs text-center" />
+                      <span class="font-bold text-slate-400">/</span>
+                      <input type="number" min="1" placeholder="Total" value="${item.compDen !== undefined ? item.compDen : ''}" class="comp-den-input w-16 rounded border border-slate-300 px-1.5 py-1 text-xs text-center" />
+                      <span class="comp-pct-label ml-auto font-extrabold text-indigo-700">${compDen > 0 ? Math.round((compNum / compDen) * 100) + '%' : '—'}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button type="button" class="save-stats-btn px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] transition">
+                    Save Percentages
+                  </button>
+                </div>
+              `;
+
+              const corrNumEl = statsBox.querySelector('.corr-num-input');
+              const corrDenEl = statsBox.querySelector('.corr-den-input');
+              const compNumEl = statsBox.querySelector('.comp-num-input');
+              const compDenEl = statsBox.querySelector('.comp-den-input');
+              const saveBtn = statsBox.querySelector('.save-stats-btn');
+
+              saveBtn.addEventListener('click', () => {
+                item.corrNum = corrNumEl.value !== '' ? Number(corrNumEl.value) : '';
+                item.corrDen = corrDenEl.value !== '' ? Number(corrDenEl.value) : '';
+                item.compNum = compNumEl.value !== '' ? Number(compNumEl.value) : '';
+                item.compDen = compDenEl.value !== '' ? Number(compDenEl.value) : '';
+                if (item.compDen > 0 && item.compNum >= item.compDen) {
+                  item.done = true;
+                  state.completedCatalogTitles[item.text] = true;
+                }
+                item.statsOpen = false;
+                saveState();
+                updateGlobalStats();
+                renderCatalogSelector();
+                renderCalendar();
+                renderInspector();
+                showToast('Saved % Correction and % Completion');
+              });
+
+              li.appendChild(statsBox);
+            }
+
+            listEl.appendChild(li);
+          });
+        }
+
+        const notesInput = document.getElementById('dayNotesInput');
+        notesInput.value = state.notesByDate[iso] || '';
+
+        document.getElementById('btnPrevDay').disabled = iso <= CALENDAR_FIRST_MONDAY_STR;
+        document.getElementById('btnPrevDay').classList.toggle('opacity-40', iso <= CALENDAR_FIRST_MONDAY_STR);
+        document.getElementById('btnNextDay').disabled = iso >= END_DATE_STR;
+        document.getElementById('btnNextDay').classList.toggle('opacity-40', iso >= END_DATE_STR);
+      }
+
+      function selectDate(iso, scrollIfNeeded) {
+        if (iso < CALENDAR_FIRST_MONDAY_STR || iso > END_DATE_STR) return;
+        state.selectedDate = iso;
+        dragState.selectedRange = null;
+        document.getElementById('slotSelectionActionBar').classList.add('hidden');
+        renderCalendar();
+        renderInspector();
+        if (scrollIfNeeded && window.innerWidth < 1280) {
+          document.getElementById('dayInspectorPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function addTodoItem(iso, text) {
+        const trimmed = text.trim();
+        if (!trimmed) return;
+        if (!state.todosByDate[iso]) {
+          state.todosByDate[iso] = [];
+        }
+        const defaultTotal = parseBracketCount(trimmed);
+        state.todosByDate[iso].push({
+          id: 'todo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+          text: trimmed,
+          done: Boolean(state.completedCatalogTitles[trimmed]),
+          corrNum: '',
+          corrDen: defaultTotal > 0 ? defaultTotal : '',
+          compNum: '',
+          compDen: defaultTotal > 0 ? defaultTotal : '',
+          statsOpen: false
+        });
+        const plannerInput = document.getElementById('plannerTaskInput');
+        if (plannerInput && (!plannerInput.value.trim() || plannerInput.value === 'Sleep (7h Goal)')) {
+          plannerInput.value = trimmed;
+          if (state.selectedColor.toLowerCase() === SLEEP_COLOR_HEX) {
+            state.selectedColor = COLOR_PALETTE[0].hex;
+            renderColorPalette();
+          }
+        }
+        saveState();
+        updateGlobalStats();
+        renderCatalogSelector();
+        renderCalendar();
+        renderInspector();
+        showToast('Added task to ' + iso);
+      }
+
+      function toggleTodoDone(iso, todoId) {
+        const list = state.todosByDate[iso] || [];
+        const target = list.find((t) => t.id === todoId);
+        if (target) {
+          target.done = !target.done;
+          state.completedCatalogTitles[target.text] = target.done;
+          saveState();
+          updateGlobalStats();
+          renderCatalogSelector();
+          renderCalendar();
+          renderInspector();
+        }
+      }
+
+      function deleteTodoItem(iso, todoId) {
+        const list = state.todosByDate[iso] || [];
+        state.todosByDate[iso] = list.filter((t) => t.id !== todoId);
+        saveState();
+        updateGlobalStats();
+        renderCatalogSelector();
+        renderCalendar();
+        renderInspector();
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function updateMonthNavButtons() {
+        const allBtn = document.getElementById('btnAllMonths');
+        const monthBtns = document.querySelectorAll('.month-filter-btn');
+
+        if (state.activeMonth === 'ALL') {
+          allBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm transition';
+        } else {
+          allBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+        }
+
+        monthBtns.forEach((btn) => {
+          if (btn.dataset.month === state.activeMonth) {
+            btn.className = 'month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm transition';
+          } else {
+            btn.className = 'month-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+          }
+        });
+      }
+
+      function updateInspectorTabUI() {
+        const tabBoth = document.getElementById('tabViewBoth');
+        const tabPlanner = document.getElementById('tabViewPlannerOnly');
+        const tabTodos = document.getElementById('tabViewTodosOnly');
+        const plannerSec = document.getElementById('plannerSectionWrapper');
+        const todoSec = document.getElementById('todoSectionWrapper');
+
+        const activeCls = 'flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition';
+        const inactiveCls = 'flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition';
+
+        tabBoth.className = state.inspectorTab === 'BOTH' ? activeCls : inactiveCls;
+        tabPlanner.className = state.inspectorTab === 'PLANNER' ? activeCls : inactiveCls;
+        tabTodos.className = state.inspectorTab === 'TODOS' ? activeCls : inactiveCls;
+
+        plannerSec.classList.toggle('hidden', state.inspectorTab === 'TODOS');
+        todoSec.classList.toggle('hidden', state.inspectorTab === 'PLANNER');
+      }
+
+      function bindEvents() {
+        window.addEventListener('mouseup', () => {
+          if (dragState.isDragging) {
+            finishSlotDrag();
+          }
+        });
+
+        document.getElementById('btnPaintMode').addEventListener('click', () => {
+          state.toolMode = 'PAINT';
+          updateToolModeButtons();
+          renderColorPalette();
+        });
+
+        document.getElementById('btnEraseMode').addEventListener('click', () => {
+          state.toolMode = 'ERASE';
+          updateToolModeButtons();
+          renderColorPalette();
+        });
+
+        document.getElementById('customColorPicker').addEventListener('input', (e) => {
+          state.selectedColor = e.target.value;
+          state.toolMode = 'PAINT';
+          updateToolModeButtons();
+          renderColorPalette();
+        });
+
+        document.getElementById('plannerTaskInput').addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (dragState.selectedRange) {
+              applyTaskToSelectedRange();
+            }
+          }
+        });
+
+        document.getElementById('btnApplyToSelection').addEventListener('click', () => {
+          applyTaskToSelectedRange();
+        });
+
+        document.getElementById('btnDeleteSelection').addEventListener('click', () => {
+          deleteSelectedRange();
+        });
+
+        document.getElementById('btnRestoreSleep').addEventListener('click', () => {
+          const iso = state.selectedDate;
+          const map = getDaySlotsMap(iso);
+          for (let s = DEFAULT_SLEEP_START_SLOT; s <= DEFAULT_SLEEP_END_SLOT; s++) {
+            map[s] = {
+              task: 'Sleep (7h Goal)',
+              color: SLEEP_COLOR_HEX,
+              isSleep: true
+            };
+          }
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          renderInspector();
+          showToast('Restored 9 PM – 4 AM Grey Sleep (7h) for ' + iso);
+        });
+
+        document.getElementById('btnClearAllDaySlots').addEventListener('click', () => {
+          const iso = state.selectedDate;
+          state.plannerByDate[iso] = {};
+          Object.defineProperty(state.plannerByDate[iso], '_sleepInitialized', { value: true, enumerable: false, configurable: true });
+          dragState.selectedRange = null;
+          document.getElementById('slotSelectionActionBar').classList.add('hidden');
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          renderInspector();
+          showToast('Cleared 24-hour grid for ' + iso);
+        });
+
+        // Master Catalog Filter & Add Events
+        document.querySelectorAll('.cat-filter-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.catalogCategory = btn.dataset.cat;
+            document.querySelectorAll('.cat-filter-btn').forEach((b) => {
+              if (b.dataset.cat === state.catalogCategory) {
+                b.className = 'cat-filter-btn px-2 py-1 rounded-md text-[10px] font-bold bg-indigo-600 text-white transition';
+              } else {
+                b.className = 'cat-filter-btn px-2 py-1 rounded-md text-[10px] font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition';
+              }
+            });
+            renderCatalogSelector();
+          });
+        });
+
+        document.getElementById('catalogSearchInput').addEventListener('input', (e) => {
+          state.catalogSearch = e.target.value;
+          renderCatalogSelector();
+        });
+
+        document.getElementById('btnAddCatalogTask').addEventListener('click', () => {
+          const sel = document.getElementById('catalogTaskSelect');
+          if (sel && sel.value) {
+            addTodoItem(state.selectedDate, sel.value);
+          }
+        });
+
+        // Inspector tabs
+        document.getElementById('tabViewBoth').addEventListener('click', () => {
+          state.inspectorTab = 'BOTH';
+          updateInspectorTabUI();
+        });
+        document.getElementById('tabViewPlannerOnly').addEventListener('click', () => {
+          state.inspectorTab = 'PLANNER';
+          updateInspectorTabUI();
+        });
+        document.getElementById('tabViewTodosOnly').addEventListener('click', () => {
+          state.inspectorTab = 'TODOS';
+          updateInspectorTabUI();
+        });
+
+        // Add To-Do Form
+        document.getElementById('todoAddForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const input = document.getElementById('todoInput');
+          addTodoItem(state.selectedDate, input.value);
+          input.value = '';
+        });
+
+        // Quick preset tags
+        document.querySelectorAll('.preset-tag-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            addTodoItem(state.selectedDate, btn.dataset.preset);
+          });
+        });
+
+        // Day Notes input
+        document.getElementById('dayNotesInput').addEventListener('input', (e) => {
+          state.notesByDate[state.selectedDate] = e.target.value;
+          saveState();
+          renderCalendar();
+        });
+
+        // Toggle Day Shade button
+        document.getElementById('btnToggleDayShade').addEventListener('click', () => {
+          const iso = state.selectedDate;
+          state.shadedOverrides[iso] = !isDayShaded(iso);
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          renderInspector();
+          showToast(isDayShaded(iso) ? `Shaded ${iso} (6h Goal)` : `Unshaded ${iso} (12h Goal)`);
+        });
+
+        // Reset Default Shading
+        document.getElementById('btnResetShading').addEventListener('click', () => {
+          state.shadedOverrides = {};
+          saveState();
+          updateGlobalStats();
+          renderCalendar();
+          renderInspector();
+          showToast('Restored default shaded schedule');
+        });
+
+        // Month filter buttons
+        document.getElementById('btnAllMonths').addEventListener('click', () => {
+          state.activeMonth = 'ALL';
+          updateMonthNavButtons();
+          renderCalendar();
+        });
+
+        document.querySelectorAll('.month-filter-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.activeMonth = btn.dataset.month;
+            updateMonthNavButtons();
+            renderCalendar();
+          });
+        });
+
+        // Filter Checkboxes
+        document.getElementById('filterHasTasks').addEventListener('change', (e) => {
+          state.filterHasTasks = e.target.checked;
+          renderCalendar();
+        });
+
+        document.getElementById('filterShadedOnly').addEventListener('change', (e) => {
+          state.filterShadedOnly = e.target.checked;
+          renderCalendar();
+        });
+
+        // Prev / Today / Next Day buttons
+        document.getElementById('btnPrevDay').addEventListener('click', () => {
+          const idx = ALL_DATES.indexOf(state.selectedDate);
+          if (idx > 0) selectDate(ALL_DATES[idx - 1], false);
+        });
+
+        document.getElementById('btnNextDay').addEventListener('click', () => {
+          const idx = ALL_DATES.indexOf(state.selectedDate);
+          if (idx >= 0 && idx < ALL_DATES.length - 1) selectDate(ALL_DATES[idx + 1], false);
+        });
+
+        document.getElementById('btnJumpToday').addEventListener('click', () => {
+          state.activeMonth = 'ALL';
+          updateMonthNavButtons();
+          selectDate(START_DATE_STR, false);
+        });
+      }
+
+      // Initialize
+      loadState();
+      renderColorPalette();
+      updateToolModeButtons();
+      renderCatalogSelector();
+      bindEvents();
+      updateGlobalStats();
+      renderCalendar();
+      renderInspector();
+    })();
+  </script>
+</body>
+</html>

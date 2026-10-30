@@ -129,7 +129,7 @@ def build():
         else:
             child.unlink()
     (OUT / "posts").mkdir(parents=True)
-    for folder in ("assets", "photos"):
+    for folder in ("assets", "photos", "mcat-planner"):
         shutil.copytree(ROOT / folder, OUT / folder, ignore=shutil.ignore_patterns(".*"))
     home = (ROOT / "templates/home.html").read_text()
     script_version = hashlib.sha256((ROOT / "assets/blog.js").read_bytes()).hexdigest()[:12]
